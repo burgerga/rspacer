@@ -1,7 +1,7 @@
 Package: rspacer
 Type: Package
 Title: RSpace API Wrapper
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Gerhard", "Burger", 
            email = "burger.ga@gmail.com", 
