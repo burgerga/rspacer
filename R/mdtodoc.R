@@ -86,6 +86,7 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
   # The API wants a plain array -> remove the names
   names(doc_body$fields) <- NULL
 
-  document_post(doc_body)
+  json <- document_post(doc_body)
 
+  return(invisible(json))
 }
