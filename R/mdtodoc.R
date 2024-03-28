@@ -6,7 +6,7 @@ html_to_doc_body <- function(path, verbose = T) {
   sections <- rvest::html_elements(xml, xpath = "//body//section[h2]")
 
   section_content <- purrr::map(sections, rvest::html_children)
-  section_heading <- purrr::map(section_content, ~ html_text(.x[1]))
+  section_heading <- purrr::map(section_content, ~ rvest::html_text(.x[1]))
   section_content <- purrr::map(section_content, ~ .x[-1]) #< remove heading
   names(section_content) <- section_heading
 
@@ -40,7 +40,7 @@ doc_get_fields <- function(doc_id, api_key = get_api_key()) {
 #' @param tags vector of tags to apply to the document
 #' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
 #' @inheritParams api_status
-
+#' @export
 document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key()) {
   doc_body <- html_to_doc_body(path, verbose = F)
   if(!is.null(template_id)) {

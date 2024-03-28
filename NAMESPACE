@@ -2,6 +2,7 @@
 
 export(api_status)
 export(doc_to_form_id)
+export(document_create_from_html)
 export(document_retrieve)
 export(document_search)
 export(file_download)
