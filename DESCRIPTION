@@ -1,0 +1,34 @@
+Package: rspacer
+Type: Package
+Title: RSpace API Wrapper
+Version: 0.1.0
+Authors@R: c(
+    person("Gerhard", "Burger", 
+           email = "burger.ga@gmail.com", 
+           role = c("aut", "cre"), 
+           comment = c(ORCID = "0000-0003-1062-5576")),
+    person("Hanneke", "Leegwater",
+           email = "h.leegwater@lacdr.leidenuniv.nl",
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0001-6003-1544"))
+            )
+Description: Wrapper for the RSpace ELN (<https://www.researchspace.com/>) API. This R package is not developed or endorsed by Research Space.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    cli,
+    curl,
+    glue,
+    httr2,
+    purrr,
+    stringr,
+    tibble,
+    tidyr
+Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Language: en-US
