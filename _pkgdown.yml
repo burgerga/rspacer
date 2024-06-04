@@ -2,3 +2,20 @@ url: https://burgerga.github.io/rspacer/
 template:
   bootstrap: 5
 
+reference:
+- title: Miscellaneous
+- contents:
+  - contains("api_")
+- title: Documents
+- contents:
+  - starts_with("document_")
+- title: Files
+- contents:
+  - starts_with("file_")
+- title: Folders
+- contents:
+  - starts_with("folder")
+- title: Utils
+- contents:
+  - doc_to_form_id
+
