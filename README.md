@@ -4,6 +4,10 @@
 # rspacer
 
 <!-- badges: start -->
+
+[![Project Status: WIP – Initial development is in progress, but there
+has not yet been a stable, usable release suitable for the
+public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
 The goal of rspacer is to wrap the [RSpace
@@ -41,7 +45,7 @@ api_status()
 #> [1] "OK"
 #> 
 #> $rspaceVersion
-#> [1] "1.96.4"
+#> [1] "1.97.5"
 ```
 
 Now you can explore the functionality of `rspacer`.
