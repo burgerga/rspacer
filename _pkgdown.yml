@@ -3,9 +3,6 @@ template:
   bootstrap: 5
 
 reference:
-- title: Miscellaneous
-- contents:
-  - contains("api_")
 - title: Documents
 - contents:
   - starts_with("document_")
@@ -18,4 +15,6 @@ reference:
 - title: Utils
 - contents:
   - doc_to_form_id
-
+- title: Miscellaneous
+- contents:
+  - contains("api_")
