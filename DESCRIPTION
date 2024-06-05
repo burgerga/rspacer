@@ -26,6 +26,8 @@ Imports:
     tibble,
     tidyr
 Suggests: 
+    knitr,
+    rmarkdown,
     spelling,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -34,3 +36,5 @@ RoxygenNote: 7.3.1
 Language: en-US
 URL: https://github.com/burgerga/rspacer, https://burgerga.github.io/rspacer/
 BugReports: https://github.com/burgerga/rspacer/issues
+Config/Needs/website: rmarkdown
+VignetteBuilder: knitr

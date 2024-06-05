@@ -1,0 +1,99 @@
+---
+title: "Introduction to rspacer"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{RSpaceR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(tidyverse.quiet = TRUE)
+```
+
+The goal of rspacer is to "wrap" the [RSpace API](https://community.researchspace.com/public/apiDocs), that is, allow you to use the API directly from R using convenience functions.
+
+**This package (and its documentation) is a work-in-progress. Contributions are welcome!**
+
+## Setting up rspacer
+
+To use rspacer it needs to know two things:
+
+1. The API URL for your RSpace instance (this is typically the URL of your RSpace instance followed by `api/v1`, e.g. https://leiden.researchspace.com/api/v1)
+2. Your API key, which is an authentication token you can use instead of your username and password. To create an API key go to 'Manage API Key' section of your RSpace profile page (MyRSpace -> Profile). **You should keep your API key private.** You can regenerate API key at any time, which will invalidate the old key.
+
+You can use the `set_api_url()` and `set_api_key()` function to make these available to rspacer in the current session.
+To make this information persistent you can store it in environment variables. An easy way to do this is with `usethis::edit_r_environ()`; in the file that opens, you should add the following lines (insert your own URL and key):
+
+```
+RSPACE_API_URL="https://leiden.researchspace.com/api/v1"
+RSPACE_API_KEY="<YOUR_API_KEY_HERE>"
+```
+
+After saving the file and restarting R, you should now be able to run
+
+```{r example}
+library(rspacer)
+api_status()
+```
+
+## Functionality
+
+### Folders
+
+Now you can use rspacer to interact with your RSpace Workspace.
+For example, `folder_tree()` will show you the content of your Workspace as a tibble:
+
+```{r}
+folder_tree()
+```
+
+You can also specify an id or Unique ID (`globalId`) to show the contents of a specific folder:
+
+```{r}
+folder_tree(7819)
+```
+
+### Documents
+
+#### Retrieve
+
+You can retrieve documents using
+
+```{r}
+res <- document_retrieve("SD356307")
+summary(res)
+```
+
+The result is json converted to an R list, to get the field information you could use
+
+```{r}
+library(tidyverse)
+tibble(fields = res$fields) |>
+  unnest_wider(fields) |>
+  select(name, type, content)
+```
+
+#### Create
+
+**WORK IN PROGRESS**
+
+Creating documents is currently possible using the (unexported) low level `rspacer:::document_post()` function. For example, the following code will create a Basic Document in the 'ApiInbox' folder
+
+```{r}
+# construct body
+body_r <- list(
+  name = "rspacer_create_doc",
+  tags = "API",
+  fields = list(
+    list(content = "Creating a document using rspacer is not (yet) easy")
+  )
+)
+res <- rspacer:::document_post(body_r)
+```
+
+The `document_create_from_html()` is a wrapper around this function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that template used MUST have the same number of fields as sections in the HTML file. For more info see <https://community.researchspace.com/public/apiDocs> [POST /documents].

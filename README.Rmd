@@ -19,11 +19,11 @@ knitr::opts_chunk$set(
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
-The goal of rspacer is to wrap the [RSpace API](https://community.researchspace.com/public/apiDocs).
+The goal of rspacer is to wrap the [RSpace API](https://community.researchspace.com/public/apiDocs), that is, allow you to use the API directly from R using convenience functions.
 
 ## Installation
 
-You can install the development version of rspacer like so:
+You can install the development version of rspacer with
 
 ```{r, eval=F}
 remotes::install_github("burgerga/rspacer")
@@ -31,22 +31,6 @@ remotes::install_github("burgerga/rspacer")
 
 ## Usage
 
-Add the environment files `RSPACE_API_URL` and `RSPACE_API_KEY` to your `.Renviron` file (you can do so using the `usethis::edit_r_environ()` command). Your `.Renviron` should contain the following lines:
+See the [Get started](https://burgerga.github.io/rspacer/articles/rspacer.html) article how to use this package.
 
-```
-RSPACE_API_URL="https://leiden.researchspace.com/api/v1"
-RSPACE_API_KEY="<YOUR_API_KEY_HERE>"
-```
-
-The `RSPACE_API_URL` is typically the URL of your RSpace instance followed by `api/v1`.
-To get your API key see the instructions in the **Authentication with an API key** section at <https://community.researchspace.com/public/apiDocs>.  
-**Keep your API key private!**
-
-After restarting R, you should now be able to run
-
-```{r example}
-library(rspacer)
-api_status()
-```
-
-Now you can explore the functionality of `rspacer`.
+**NB:** API Paging/rate limiting is not properly handled yet, but this can be worked around.

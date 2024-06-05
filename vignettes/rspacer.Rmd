@@ -1,0 +1,155 @@
+---
+title: "Introduction to rspacer"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{RSpaceR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+The goal of rspacer is to "wrap" the [RSpace API](https://community.researchspace.com/public/apiDocs), that is, allow you to use the API directly from R using convenience functions.
+
+**This package (and its documentation) is a work-in-progress. Contributions are welcome!**
+
+## Setting up rspacer
+
+To use rspacer it needs to know two things:
+
+1. The API URL for your RSpace instance (this is typically the URL of your RSpace instance followed by `api/v1`, e.g. https://leiden.researchspace.com/api/v1)
+2. Your API key, which is an authentication token you can use instead of your username and password. To create an API key go to 'Manage API Key' section of your RSpace profile page (MyRSpace -> Profile). **You should keep your API key private.** You can regenerate API key at any time, which will invalidate the old key.
+
+You can use the `set_api_url()` and `set_api_key()` function to make these available to rspacer in the current session.
+To make this information persistent you can store it in environment variables. An easy way to do this is with `usethis::edit_r_environ()`; in the file that opens, you should add the following lines (insert your own URL and key):
+
+```
+RSPACE_API_URL="https://leiden.researchspace.com/api/v1"
+RSPACE_API_KEY="<YOUR_API_KEY_HERE>"
+```
+
+After saving the file and restarting R, you should now be able to run
+
+
+```r
+library(rspacer)
+api_status()
+#> $message
+#> [1] "OK"
+#> 
+#> $rspaceVersion
+#> [1] "1.97.5"
+```
+
+## Functionality
+
+### Folders
+
+Now you can use rspacer to interact with your RSpace Workspace.
+For example, `folder_tree()` will show you the content of your Workspace as a tibble:
+
+
+```r
+folder_tree()
+#> # A tibble: 10 × 9
+#>        id globalId name              created lastModified parentFolderId type  `_links`
+#>     <int> <chr>    <chr>             <chr>   <chr>                 <int> <chr> <list>  
+#>  1 356307 SD356307 Gerhard Burger    2024-0… 2024-01-17T…           7813 DOCU… <list>  
+#>  2 260004 FL260004 LACDR RDM         2023-1… 2023-11-06T…           7813 FOLD… <list>  
+#>  3 242175 FL242175 GABi001_EMP_regu… 2023-0… 2023-06-14T…           7813 FOLD… <list>  
+#>  4 242400 FL242400 Ontologies        2023-0… 2023-06-01T…           7813 FOLD… <list>  
+#>  5 242398 FL242398 Api Inbox         2023-0… 2023-06-01T…           7813 FOLD… <list>  
+#>  6 242182 FL242182 Publications      2023-0… 2023-05-30T…           7813 FOLD… <list>  
+#>  7  21961 FL21961  DDS2 Data manage… 2023-0… 2023-03-16T…           7813 FOLD… <list>  
+#>  8   7833 FL7833   Templates         2022-1… 2022-12-22T…           7813 FOLD… <list>  
+#>  9   7819 GF7819   Gallery           2022-1… 2022-12-22T…           7813 FOLD… <list>  
+#> 10   7814 FL7814   Shared            2022-1… 2022-12-22T…           7813 FOLD… <list>  
+#> # ℹ 1 more variable: owner <list>
+```
+
+You can also specify an id or Unique ID (`globalId`) to show the contents of a specific folder:
+
+
+```r
+folder_tree(7819)
+#> # A tibble: 8 × 9
+#>      id globalId name   created lastModified parentFolderId type  `_links` owner       
+#>   <int> <chr>    <chr>  <chr>   <chr>                 <int> <chr> <list>   <list>      
+#> 1  7828 GF7828   Snipp… 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+#> 2  7827 GF7827   PdfDo… 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+#> 3  7826 GF7826   Misce… 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+#> 4  7825 GF7825   Docum… 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+#> 5  7824 GF7824   Chemi… 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+#> 6  7823 GF7823   Videos 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+#> 7  7822 GF7822   Audios 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+#> 8  7820 GF7820   Images 2022-1… 2022-12-22T…           7819 FOLD… <list>   <named list>
+```
+
+### Documents
+
+#### Retrieve
+
+You can retrieve documents using
+
+
+```r
+res <- document_retrieve("SD356307")
+summary(res)
+#>                Length Class  Mode     
+#> id              1     -none- numeric  
+#> globalId        1     -none- character
+#> name            1     -none- character
+#> created         1     -none- character
+#> lastModified    1     -none- character
+#> parentFolderId  1     -none- numeric  
+#> signed          1     -none- logical  
+#> tags            0     -none- NULL     
+#> tagMetaData     0     -none- NULL     
+#> form           10     -none- list     
+#> owner          10     -none- list     
+#> fields          8     -none- list     
+#> _links          1     -none- list
+```
+
+The result is json converted to an R list, to get the field information you could use
+
+
+```r
+library(tidyverse)
+tibble(fields = res$fields) |>
+  unnest_wider(fields) |>
+  select(name, type, content)
+#> # A tibble: 8 × 3
+#>   name          type   content                                                         
+#>   <chr>         <chr>  <chr>                                                           
+#> 1 Template Used string "LACDR-ISA - Contact v0.2.0"                                    
+#> 2 Name          string "Gerhard A. Burger"                                             
+#> 3 Email         string "g.a.burger@lacdr.leidenuniv.nl"                                
+#> 4 Phone         string ""                                                              
+#> 5 ORCID         string "0000-0003-1062-5576"                                           
+#> 6 Address       text   "<p><a href=\"https://www.universiteitleiden.nl/en/locations/go…
+#> 7 Affiliation   string "Leiden University"                                             
+#> 8 Roles         text   ""
+```
+
+#### Create
+
+**WORK IN PROGRESS**
+
+Creating documents is currently possible using the (unexported) low level `rspacer:::document_post()` function. For example, the following code will create a Basic Document in the 'ApiInbox' folder
+
+
+```r
+# construct body
+body_r <- list(
+  name = "rspacer_create_doc",
+  tags = "API",
+  fields = list(
+    list(content = "Creating a document using rspacer is not (yet) easy")
+  )
+)
+res <- rspacer:::document_post(body_r)
+#> Document created: <https://leiden.researchspace.com/globalId/SD376167>
+```
+
+The `document_create_from_html()` is a wrapper around this function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that template used MUST have the same number of fields as sections in the HTML file. For more info see <https://community.researchspace.com/public/apiDocs> [POST /documents].
