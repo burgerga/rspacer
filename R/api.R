@@ -4,6 +4,11 @@
 #' Gets the RSpace API URL from the `RSPACE_API_URL` environment variable.
 #' See [set_api_url()] on how to set it.
 #'
+#' @examples
+#' \donttest{
+#' get_api_url()
+#' }
+#'
 #' @seealso [set_api_url()]
 #' @export
 get_api_url <- function() {
@@ -43,6 +48,11 @@ set_api_url <- function(rspace_api_url) {
 #'
 #' Gets the RSpace API key from the `RSPACE_API_KEY` environment variable.
 #' See [set_api_key()] on how to set it.
+#'
+#' @examples
+#' \donttest{
+#' get_api_key()
+#' }
 #'
 #' @seealso [set_api_key()]
 #' @export
@@ -97,6 +107,9 @@ request <- function() {
 #' Function to check availability of the API service
 #'
 #' @param api_key RSpace API key
+#'
+#' @examples
+#' api_status()
 #'
 #' @export
 api_status <- function(api_key = get_api_key()) {

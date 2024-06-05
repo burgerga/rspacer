@@ -10,6 +10,12 @@ get_api_url()
 Gets the RSpace API URL from the \code{RSPACE_API_URL} environment variable.
 See \code{\link[=set_api_url]{set_api_url()}} on how to set it.
 }
+\examples{
+\donttest{
+get_api_url()
+}
+
+}
 \seealso{
 \code{\link[=set_api_url]{set_api_url()}}
 }

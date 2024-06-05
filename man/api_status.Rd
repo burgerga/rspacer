@@ -12,3 +12,7 @@ api_status(api_key = get_api_key())
 \description{
 Function to check availability of the API service
 }
+\examples{
+api_status()
+
+}
