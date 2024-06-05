@@ -15,5 +15,5 @@ document_search(query, ..., api_key = get_api_key())
 \item{api_key}{RSpace API key}
 }
 \description{
-Global search for a term
+Global search for a term, works identically to the simple "All" search in RSpace Workspace. Must be >= 3 characters long.
 }
