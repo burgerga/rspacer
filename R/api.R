@@ -81,6 +81,8 @@ rspace_error_body <- function(resp) {
 }
 
 create_global_id_link <- function(global_id) {
+  # TODO: wait for https://github.com/r-lib/httr2/issues/464
+  # for this function to be exported in httr2
   httr2:::url_modify(get_api_url(), path = glue::glue("globalId/{global_id}"))
 }
 
