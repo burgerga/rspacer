@@ -39,9 +39,10 @@ doc_get_fields <- function(doc_id, api_key = get_api_key()) {
 #' @param folder_id folder_id in which the document will be created (can be a notebook)
 #' @param tags vector of tags to apply to the document
 #' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
+#' @param existing_document_id if you want to replace a document by a new one, specify the current identifier here.
 #' @inheritParams api_status
 #' @export
-document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key()) {
+document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
   doc_body <- html_to_doc_body(path, verbose = F)
   if(!is.null(template_id)) {
     template_fields <- doc_get_fields(template_id)
@@ -86,7 +87,12 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
   # The API wants a plain array -> remove the names
   names(doc_body$fields) <- NULL
 
-  json <- document_post(doc_body)
+  # Create or replace the document
+  if(is.null(existing_document_id)){
+    json <- document_post(doc_body)
+  } else {
+    json <- document_replace(doc_body, existing_document_id)
+  }
 
   return(invisible(json))
 }

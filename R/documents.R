@@ -27,6 +27,21 @@ document_post <- function(body, api_key = get_api_key()) {
   json
 }
 
+document_replace <- function(body, existing_document_id, api_key = get_api_key()) {
+  body$tags <- paste0(c("rspacer", body$tags), collapse= ",")
+  request() |>
+    httr2::req_url_path_append("documents", parse_rspace_id(existing_document_id)) |>
+    httr2::req_headers(`apiKey` = api_key) |>
+    httr2::req_body_json(body) |>
+    httr2::req_method("PUT") |>
+    httr2::req_perform() |>
+    httr2::resp_body_json() -> json
+
+  cli::cli_inform("Document replaced: {.url {create_global_id_link(json$globalId)}}")
+
+  return(json)
+}
+
 #'
 #' Global search for a term
 #'
