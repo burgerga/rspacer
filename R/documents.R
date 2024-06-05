@@ -32,7 +32,7 @@ document_post <- function(body, api_key = get_api_key()) {
 #'
 #' @param query  description
 #' @param ... query parameters as documented in
-#' <https://community.researchspace.com/public/apiDocs> \[GET&nbsp;/documents\]
+#' <https://community.researchspace.com/public/apiDocs> \[GET /documents\]
 #' @inheritParams api_status
 #'
 #' @export

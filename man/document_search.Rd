@@ -10,7 +10,7 @@ document_search(query, ..., api_key = get_api_key())
 \item{query}{description}
 
 \item{...}{query parameters as documented in
-\url{https://community.researchspace.com/public/apiDocs} [GET /documents]}
+\url{https://community.researchspace.com/public/apiDocs} [GET /documents]}
 
 \item{api_key}{RSpace API key}
 }
