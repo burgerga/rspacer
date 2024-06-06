@@ -3,7 +3,7 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   rspacer: rspacer.html
-last_built: 2024-06-05T13:24Z
+last_built: 2024-06-06T14:25Z
 urls:
   reference: https://burgerga.github.io/rspacer/reference
   article: https://burgerga.github.io/rspacer/articles
