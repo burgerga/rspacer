@@ -1,0 +1,106 @@
+---
+title: "Tutorial document_create_from_html()"
+author: ""
+date: "`r Sys.Date()`"
+engine: knitr
+format: 
+  html:
+    self-contained: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df-print: kable
+---
+
+## Title
+
+`r rmarkdown::metadata$title`
+
+## Date (dd-MM-yyyy)
+
+`r format(Sys.time(), format = "%d-%m-%Y")`
+
+## Before you start
+
+We advice you to read the rspacer Get started website on https://burgerga.github.io/rspacer/index.html to make sure that you are ready to use this upload document. You need to install rspacer and set up your API url and API key before this script is will run.
+
+## Load R libraries
+
+Optionally, update rspacer. Code chunk below not run or shown by default.
+
+```{r eval=FALSE, include=FALSE}
+#remotes::install_github("burgerga/rspacer", force = T)
+```
+
+```{r}
+library(tidyverse)
+library(here)
+library(rspacer)
+```
+
+## Check if the API is available
+
+The API status should be OK.
+
+```{r}
+(res <- api_status())
+stopifnot(res$message == "OK")
+```
+
+## Specify the file name of the file to upload
+
+We recommend to work with relative paths from within an R project and specify these paths using the here package. If this is not what you want, you need to specify the absolute file path.
+
+```{r}
+(file_name <- here("Template_example.html"))
+(matching_code_file <- str_replace(file_name, ".html$", ".qmd"))
+stopifnot(file.exists(file_name))
+stopifnot(file.exists(matching_code_file))
+```
+
+## Specify the template and folder to upload to
+
+You can 'walk' through folders until you find the folder or notebook you need, using the folder_tree() function in rspacer. If you want to replace a file, also define the existing file id. If you have a more complicated document than a Basic Document, you have to specify the identifier of the Template as well. Folder identifiers start with FL. Notebook identifiers start with NB. Structured document identifiers start with SD.
+
+```{r}
+folder_tree()
+folder_tree("") # Specify folder ID in brackets to keep walking.
+
+folder_id <- "" # Specify folder ID for upload
+template_id <- "" # SD identifier of the template
+field_nr_for_code <- 0 # Specify the field in which the code file needs to be attached.
+existing_file_id <- "" # Optional, used if one wants to replace a file. Leave empty string if no file needs to be created.
+
+tags <- c("") # You can add multiple tags in a vector. For example a grant number, or "finished" or "in progress" or "failed".
+```
+
+### Upload the file
+
+The function document_create_from_html uploads the file to the specified notebook or folder. If you want to upload a code file, it will be added in the number of the field as an attachment. Use the existing_file_id only if a file needs to be replaced instead of created.
+
+```{r}
+if(existing_file_id != ""){
+  document_create_from_html(
+    path = file_name,
+    template_id = template_id,
+    folder_id = folder_id,
+    tags = tags,
+    attachment = list(field = field_nr_for_code, path = matching_code_file)
+  )
+} else {
+  document_create_from_html(
+    path = file_name,
+    template_id = template_id,
+    folder_id = folder_id,
+    tags = tags,
+    attachment = list(field = field_nr_for_code, path = matching_code_file),
+    existing_file_id  = existing_file_id
+  )
+}
+```
+
+## Session info
+
+```{r}
+sessionInfo()
+```
