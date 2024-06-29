@@ -1,0 +1,49 @@
+---
+title: "Template example"
+author: "rspacer authors"
+date: "`r Sys.Date()`"
+engine: knitr
+format: 
+  html:
+    self-contained: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df-print: kable
+---
+
+## Title
+
+`r rmarkdown::metadata$title`
+
+## Date
+
+`r format(Sys.time(), format = "%d-%m-%Y")`
+
+## Main part
+
+You can write any code, as long as you have the same amount of `h2` headers (with 2 ##) as in your structured document template. For example if you want to plot the Sepal.Length and Sepal.Width of the iris data frame:
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+dim(iris)
+head(iris)
+```
+
+### A header with level h3
+
+And a plot:
+
+```{r}
+iris %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  theme_classic() +
+  geom_point()
+```
+
+## Conclusion
+
+In this minimal example template, we generated a html file from quarto that can be used to create a document in RSpace using the `document_create_from_html()` function.

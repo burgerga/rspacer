@@ -1,0 +1,4 @@
+name: Tutorial document_create_from_html()
+description: >
+   This document is a small tutorial that can be followed to use the rspacer API to upload a html file to a folder in Rspace. It uses the function Tutorial document_create_from_html().
+create_dir: FALSE

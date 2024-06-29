@@ -1,0 +1,4 @@
+name: Template example
+description: >
+   Template example that can be used to upload html file to RSpace
+create_dir: FALSE
