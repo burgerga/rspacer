@@ -1,66 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://burgerga.github.io/rspacer/404.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/articles/rspacer.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/index.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/api_status.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/doc_to_form_id.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/document_create_from_html.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/document_retrieve.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/document_search.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/file_download.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/file_upload.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/folder_tree.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/get_api_key.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/get_api_url.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/set_api_key.html</loc>
-  </url>
-  <url>
-    <loc>https://burgerga.github.io/rspacer/reference/set_api_url.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://burgerga.github.io/rspacer/404.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/LICENSE-text.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/LICENSE.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/articles/index.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/articles/rspacer.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/authors.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/index.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/news/index.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/api_status.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/doc_to_form_id.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/document_create_from_html.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/document_retrieve.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/document_search.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/file_download.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/file_upload.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/folder_tree.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/get_api_key.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/get_api_url.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/index.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/set_api_key.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/set_api_url.html</loc></url>
 </urlset>
+
