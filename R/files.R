@@ -12,7 +12,7 @@ file_upload <- function(path, api_key = get_api_key()) {
     httr2::req_perform() |>
     httr2::resp_body_json() -> json
 
-  cli::cli_inform("File uploaded to {.url create_global_id_link(json$globalId)}")
+  cli::cli_inform("File uploaded to {.url {create_global_id_link(json$globalId)}}")
 
   json
 }
