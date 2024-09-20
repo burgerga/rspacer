@@ -31,6 +31,23 @@ doc_get_fields <- function(doc_id, api_key = get_api_key()) {
   tibble::tibble(fields = doc$fields) |> tidyr::unnest_wider("fields")
 }
 
+add_information_to_doc_body <- function(doc_body, folder_id, tags, attachment){
+  if(!is.null(folder_id)) {
+    doc_body$parentFolderId <- parse_rspace_id(folder_id)
+  }
+
+  if(!is.null(tags)) {
+    doc_body$tags <- paste(tags, collapse = ",")
+  }
+
+  if(!is.null(attachment)) {
+    doc_body <- attachment_upload(doc_body, attachment, api_key)
+  }
+
+  # The API wants a plain array -> remove the names
+  names(doc_body$fields) <- NULL
+  return(doc_body)
+}
 #'
 #' Upload html document (e.g., generated from quarto)
 #'
@@ -58,7 +75,6 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
       .x
     })
 
-
     form_id <- parse_rspace_id(doc_to_form_id(template_id, verbose = F))
     doc_body$form = list(id = form_id)
   } else {
@@ -68,24 +84,8 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
       .x
     })
   }
-
-  if(!is.null(folder_id)) {
-    doc_body$parentFolderId <- parse_rspace_id(folder_id)
-  }
-
-  if(!is.null(tags)) {
-    doc_body$tags <- paste(tags, collapse = ",")
-  }
-
-  if(!is.null(attachment)) {
-    json <- file_upload(attachment$path, api_key)
-    doc_body$fields[[attachment$field]]$content <- glue::glue(doc_body$fields[[attachment$field]]$content,
-                                                              "<p>Inserted <fileId={json$id}></p>")
-
-  }
-
-  # The API wants a plain array -> remove the names
-  names(doc_body$fields) <- NULL
+  # Add tags, form ID and attachments to doc_body
+  doc_body <- add_information_to_doc_body(doc_body, folder_id, tags, attachment)
 
   # Create or replace the document
   if(is.null(existing_document_id)){
