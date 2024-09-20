@@ -26,6 +26,35 @@ html_to_doc_body <- function(path, verbose = T) {
   )
 }
 
+excel_to_doc_body <- function(path, verbose = T, file_type = NULL) {
+
+  if(is.null(file_type)){
+    file_type = tools::file_ext(path)
+  }
+  sections <- switch(file_type,
+                     "xlsx" = readxl::read_excel(path, col_names = c("name", "content")),
+                     "csv" = readr::read_csv(path, col_names = c("name", "content")),
+                     "tsv" = readr::read_tsv(path, col_names = c("name", "content"))
+  )
+
+  title    <- filter(sections, name == "Title") %>% pull(content)
+
+  if(verbose) {
+    cli::cli_inform("{.field Title}: {title}")
+    purrr::iwalk(section_heading, ~ cli::cli_inform("{.field - Section {.y}}: {.x}"))
+  }
+  # Get a list as required by Rspace
+  fields <- lapply(1:nrow(sections), function(row_nr) {
+    list("name" = sections$name[row_nr], "content" = sections$content[row_nr])
+  })
+  names(fields) <- df$name
+
+  list(
+    name = title,
+    fields = fields
+  )
+}
+
 doc_get_fields <- function(doc_id, api_key = get_api_key()) {
   doc <- document_retrieve(doc_id, api_key)
   tibble::tibble(fields = doc$fields) |> tidyr::unnest_wider("fields")
@@ -84,6 +113,35 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
       .x
     })
   }
+  # Add tags, form ID and attachments to doc_body
+  doc_body <- add_information_to_doc_body(doc_body, folder_id, tags, attachment)
+
+  # Create or replace the document
+  if(is.null(existing_document_id)){
+    json <- document_post(doc_body)
+  } else {
+    json <- document_replace(doc_body, existing_document_id)
+  }
+
+  return(invisible(json))
+}
+
+#'
+#' Convert a tabular document to an Rspace entry
+#'
+#' This function can upload Excel/csv/tabular files to Rspace structured documents.
+#' The file needs to have exactly two columns, one with the Rspace structured document fields and one with the content.
+#' @param path Tabular file
+#' @param verbose Print information if set to TRUE.
+#' @param file_type File format of the tabular file. Can be "xlsx", "csv", or "tsv" (Excel, comma separated or tab separated). If not specified, this will be guessed from the file path.
+#' @inheritParams api_status
+#' @returns a list with sublists, each for each row. The named list has the column headers as fields
+#' @examples
+#' excel_to_doc_body("assay_with_information.xlsx")
+#' @export
+document_create_from_excel <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
+  doc_body <- excel_to_doc_body(here("examples_for_upload/test_excel.xlsx"))
+
   # Add tags, form ID and attachments to doc_body
   doc_body <- add_information_to_doc_body(doc_body, folder_id, tags, attachment)
 
