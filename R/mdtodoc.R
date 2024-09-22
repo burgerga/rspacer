@@ -60,7 +60,25 @@ doc_get_fields <- function(doc_id, api_key = get_api_key()) {
   tibble::tibble(fields = doc$fields) |> tidyr::unnest_wider("fields")
 }
 
-add_information_to_doc_body <- function(doc_body, folder_id, tags, attachment){
+attachment_upload <- function(doc_body, attachment, api_key){
+  # Test if the attachment list has the correct format
+  if(!is.list(attachment)) cli::cli_abort(message = c("x" = "attachment is not provided as a list"))
+  if(!identical(sort(names(attachment)), c("field", "path"))) cli::cli_abort(message = c("x" = "attachment is either missing the field number or the path"))
+  if(as.numeric(attachment$field) > length(doc_body$fields))  cli::cli_abort(message = c("x" = str_glue("attachment field number is higher than the total number of fields: {length(doc_body$fields)}")))
+
+  # Upload the attachment and add its name and path to to doc_body
+  json <- file_upload(attachment$path, api_key)
+  doc_body$fields[[attachment$field]]$content <- glue::glue(doc_body$fields[[attachment$field]]$content,
+                                                            "<p>Inserted <fileId={json$id}></p>")
+  return(doc_body)
+}
+
+add_information_to_doc_body <- function(doc_body, template_id = NULL,folder_id = NULL, tags = NULL, attachment = NULL){
+  if(!is.null(template_id)){
+    form_id <- parse_rspace_id(doc_to_form_id(template_id, verbose = F))
+    doc_body$form = list(id = form_id)
+  }
+
   if(!is.null(folder_id)) {
     doc_body$parentFolderId <- parse_rspace_id(folder_id)
   }
@@ -103,9 +121,6 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
       }
       .x
     })
-
-    form_id <- parse_rspace_id(doc_to_form_id(template_id, verbose = F))
-    doc_body$form = list(id = form_id)
   } else {
     # TODO Basic Document can have only 1 field
     doc_body$fields <- purrr::map(doc_body$fields, ~ {
@@ -140,10 +155,10 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
 #' excel_to_doc_body("assay_with_information.xlsx")
 #' @export
 document_create_from_excel <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
-  doc_body <- excel_to_doc_body(here("examples_for_upload/test_excel.xlsx"))
+  doc_body <- excel_to_doc_body(here("examples_for_upload/test_excel.xlsx"), verbose = F)
 
   # Add tags, form ID and attachments to doc_body
-  doc_body <- add_information_to_doc_body(doc_body, folder_id, tags, attachment)
+  doc_body <- add_information_to_doc_body(doc_body, template_id = template_id, folder_id = folder_id, tags = tags, attachment = attachment)
 
   # Create or replace the document
   if(is.null(existing_document_id)){
