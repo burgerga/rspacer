@@ -26,6 +26,15 @@ html_to_doc_body <- function(path, verbose = T) {
   )
 }
 
+data_frame_to_fields <- function(fields_data_frame) {
+  fields <- lapply(1:nrow(fields_data_frame), function(row_nr) {
+    list("name" = fields_data_frame$name[row_nr],
+         "content" = fields_data_frame$content[row_nr])
+  })
+  names(fields) <- fields_data_frame$name
+  return(fields)
+}
+
 excel_to_doc_body <- function(path, verbose = T, file_type = NULL) {
 
   if(is.null(file_type)){
@@ -44,11 +53,7 @@ excel_to_doc_body <- function(path, verbose = T, file_type = NULL) {
     purrr::iwalk(section_heading, ~ cli::cli_inform("{.field - Section {.y}}: {.x}"))
   }
   # Get a list as required by Rspace
-  fields <- lapply(1:nrow(sections), function(row_nr) {
-    list("name" = sections$name[row_nr], "content" = sections$content[row_nr])
-  })
-  names(fields) <- df$name
-
+  fields <- data_frame_to_fields(sections)
   list(
     name = title,
     fields = fields
@@ -73,7 +78,7 @@ attachment_upload <- function(doc_body, attachment, api_key){
   return(doc_body)
 }
 
-add_information_to_doc_body <- function(doc_body, template_id = NULL,folder_id = NULL, tags = NULL, attachment = NULL){
+add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL){
   if(!is.null(template_id)){
     form_id <- parse_rspace_id(doc_to_form_id(template_id, verbose = F))
     doc_body$form = list(id = form_id)
