@@ -2,7 +2,7 @@
 % Please edit documentation in R/mdtodoc.R
 \name{document_create_from_html}
 \alias{document_create_from_html}
-\title{Upload html document (e.g., generated from quarto)}
+\title{Upload a html document to Rspace}
 \usage{
 document_create_from_html(
   path,
@@ -10,11 +10,12 @@ document_create_from_html(
   folder_id = NULL,
   tags = NULL,
   attachment = NULL,
-  api_key = get_api_key()
+  api_key = get_api_key(),
+  existing_document_id = NULL
 )
 }
 \arguments{
-\item{path}{html document to be uploaded}
+\item{path}{html document to upload}
 
 \item{template_id}{document id of the RSpace template used}
 
@@ -25,7 +26,10 @@ document_create_from_html(
 \item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
 
 \item{api_key}{RSpace API key}
+
+\item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
 }
 \description{
-Upload html document (e.g., generated from quarto)
+This function can upload a html document (e.g., generated from quarto) to an
+Rspace Basic Document, or to a Structured Document if the template is also provided.
 }

@@ -46,7 +46,7 @@ excel_to_doc_body <- function(path, verbose = T, file_type = NULL) {
                      "tsv" = readr::read_tsv(path, col_names = c("name", "content"))
   )
 
-  title    <- filter(sections, name == "Title") %>% pull(content)
+  title    <- dplyr::filter(sections, name == "Title") |> dplyr::pull(content)
 
   if(verbose) {
     cli::cli_inform("{.field Title}: {title}")
@@ -100,10 +100,12 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
   names(doc_body$fields) <- NULL
   return(doc_body)
 }
+#' Upload a html document to Rspace
 #'
-#' Upload html document (e.g., generated from quarto)
+#' This function can upload a html document (e.g., generated from quarto) to an
+#' Rspace Basic Document, or to a Structured Document if the template is also provided.
 #'
-#' @param path html document to be uploaded
+#' @param path html document to upload
 #' @param template_id document id of the RSpace template used
 #' @param folder_id folder_id in which the document will be created (can be a notebook)
 #' @param tags vector of tags to apply to the document
@@ -146,16 +148,20 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
   return(invisible(json))
 }
 
-#'
-#' Convert a tabular document to an Rspace entry
+#' Upload an Excel, csv or tsv document to Rspace
 #'
 #' This function can upload Excel/csv/tabular files to Rspace structured documents.
 #' The file needs to have exactly two columns, one with the Rspace structured document fields and one with the content.
-#' @param path Tabular file
-#' @param verbose Print information if set to TRUE.
-#' @param file_type File format of the tabular file. Can be "xlsx", "csv", or "tsv" (Excel, comma separated or tab separated). If not specified, this will be guessed from the file path.
+#'
+#' @param path tabular file to upload. Can be .xlsx, .csv or .tsv
+#' @param file_type an optional character string to specify the file type. Will be guessed from the file name if not specified.
+#' @param template_id document id of the RSpace template used
+#' @param folder_id folder_id in which the document will be created (can be a notebook)
+#' @param tags vector of tags to apply to the document
+#' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
+#' @param existing_document_id if you want to replace a document by a new one, specify the current identifier here.
+
 #' @inheritParams api_status
-#' @returns a list with sublists, each for each row. The named list has the column headers as fields
 #' @examples
 #' excel_to_doc_body("assay_with_information.xlsx")
 #' @export
