@@ -34,19 +34,36 @@ data_frame_to_fields <- function(fields_data_frame) {
   names(fields) <- fields_data_frame$name
   return(fields)
 }
-
-excel_to_doc_body <- function(path, verbose = T, file_type = NULL) {
-
+excel_rspace_document_name <- function(path, sections, document_name = NULL){
+  if(!is.null(document_name)){
+    if(!is.character(document_name)) cli::cli_abort(message = c("x" = "Document name should be a character string or NULL"))
+    title <- document_name
+  } else if("Title" %in% sections$name){
+    title    <- dplyr::filter(sections, name == "Title") |> dplyr::pull(content)
+  } else if("Name" %in% sections$name){
+    title    <- dplyr::filter(sections, name == "Name") |> dplyr::pull(content)
+  } else if("title" %in% sections$name){
+    title    <- dplyr::filter(sections, name == "title") |> dplyr::pull(content)
+  } else if("name" %in% sections$name){
+    title    <- dplyr::filter(sections, name == "name") |> dplyr::pull(content)
+  } else{
+    title <- tools::file_path_sans_ext(path) |> basename()
+  }
+  return(title)
+}
+excel_to_doc_body <- function(path, document_name = NULL, verbose = T, file_type = NULL) {
+  if(!file.exists(path)) cli::cli_abort(message = c("x" = glue::glue("File not found: {path}")))
   if(is.null(file_type)){
     file_type = tools::file_ext(path)
   }
+  if(!file_type %in% c("xlsx", "csv", "tsv")) cli::cli_abort(message = c("x" = glue::glue("file_type is {file_type}. It should be xlsx, csv or tsv. Specify file_type manually or rename the input file.")))
   sections <- switch(file_type,
                      "xlsx" = readxl::read_excel(path, col_names = c("name", "content")),
                      "csv" = readr::read_csv(path, col_names = c("name", "content")),
                      "tsv" = readr::read_tsv(path, col_names = c("name", "content"))
   )
-
-  title    <- dplyr::filter(sections, name == "Title") |> dplyr::pull(content)
+  # Set the Rspace entry title
+  title <- excel_rspace_document_name(path, sections, document_name)
 
   if(verbose) {
     cli::cli_inform("{.field Title}: {title}")
@@ -153,8 +170,11 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
 #' This function can upload Excel/csv/tabular files to Rspace structured documents.
 #' The file needs to have exactly two columns, one with the Rspace structured document fields and one with the content.
 #'
-#' @param path tabular file to upload. Can be .xlsx, .csv or .tsv
+#' @param path spreadsheet-like file to upload. Can be xlsx, csv or tsv
 #' @param file_type an optional character string to specify the file type. Will be guessed from the file name if not specified.
+#' @param document_name specify the name of the Rspace entry. If not specified,
+#' it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
+#' If that does not exist, it will be the file name.
 #' @param template_id document id of the RSpace template used
 #' @param folder_id folder_id in which the document will be created (can be a notebook)
 #' @param tags vector of tags to apply to the document
@@ -165,8 +185,8 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
 #' @examples
 #' excel_to_doc_body("assay_with_information.xlsx")
 #' @export
-document_create_from_excel <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
-  doc_body <- excel_to_doc_body(here("examples_for_upload/test_excel.xlsx"), verbose = F)
+document_create_from_excel <- function(path, file_type = NULL, document_name = NULL, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
+  doc_body <- excel_to_doc_body(path, document_name = document_name, verbose = F, file_type = file_type)
 
   # Add tags, form ID and attachments to doc_body
   doc_body <- add_information_to_doc_body(doc_body, template_id = template_id, folder_id = folder_id, tags = tags, attachment = attachment)
