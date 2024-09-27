@@ -95,7 +95,7 @@ attachment_upload <- function(doc_body, attachment, api_key){
   return(doc_body)
 }
 
-add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL){
+add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key()){
   if(!is.null(template_id)){
     form_id <- parse_rspace_id(doc_to_form_id(template_id, verbose = F))
     doc_body$form = list(id = form_id)
@@ -123,7 +123,7 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
 #' Rspace Basic Document, or to a Structured Document if the template is also provided.
 #'
 #' @param path html document to upload
-#' @param template_id document id of the RSpace template used
+#' @param template_id document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.
 #' @param folder_id folder_id in which the document will be created (can be a notebook)
 #' @param tags vector of tags to apply to the document
 #' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
@@ -132,6 +132,11 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
 #' @export
 document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
   doc_body <- html_to_doc_body(path, verbose = F)
+
+  if(!is.null(existing_document_id)){
+    template_id <- existing_document_id
+  }
+
   if(!is.null(template_id)) {
     template_fields <- doc_get_fields(template_id)
 
@@ -153,7 +158,7 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
     })
   }
   # Add tags, form ID and attachments to doc_body
-  doc_body <- add_information_to_doc_body(doc_body, folder_id, tags, attachment)
+  doc_body <- add_information_to_doc_body(doc_body, template_id, folder_id, tags, attachment, api_key)
 
   # Create or replace the document
   if(is.null(existing_document_id)){
