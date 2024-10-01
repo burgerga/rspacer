@@ -30,18 +30,6 @@ test_that("excel_rspace_document_name can process a document name", {
                "minimal_excel")
 })
 
-test_that("data_frame_to_fields creates a list", {
-  # sections and matching list that we expect. sections and fields are defined in helper.R
-  sections <- helper_get_sections()
-  fields <- helper_get_fields()
-
-  expect_equal(data_frame_to_fields(sections), fields)
-  # error with incorrect input. TODO raise this error in the function itself?
-  expect_error(data_frame_to_fields("this is not a data frame"))
-  expect_error(data_frame_to_fields(c("this is not a data frame")))
-  expect_error(data_frame_to_fields(list("this is not a data frame")))
-})
-
 test_that("excel_to_doc_body can create a doc body",{
   # one that should work
   expect_type(excel_to_doc_body(path = testthat::test_path("minimal_excel.xlsx"), verbose = F, file_type = "xlsx"), "list")

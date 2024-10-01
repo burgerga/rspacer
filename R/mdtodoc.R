@@ -26,14 +26,6 @@ html_to_doc_body <- function(path, verbose = T) {
   )
 }
 
-data_frame_to_fields <- function(fields_data_frame) {
-  fields <- lapply(1:nrow(fields_data_frame), function(row_nr) {
-    list("name" = fields_data_frame$name[row_nr],
-         "content" = fields_data_frame$content[row_nr])
-  })
-  names(fields) <- fields_data_frame$name
-  return(fields)
-}
 excel_rspace_document_name <- function(path, sections, document_name = NULL){
   if(!is.null(document_name)){
     if(!is.character(document_name)) cli::cli_abort(message = c("x" = "Document name should be a character string or NULL"))
@@ -51,6 +43,7 @@ excel_rspace_document_name <- function(path, sections, document_name = NULL){
   }
   return(title)
 }
+
 excel_to_doc_body <- function(path, document_name = NULL, verbose = T, file_type = NULL) {
   if(!file.exists(path)) cli::cli_abort(message = c("x" = glue::glue("File not found: {path}")))
   if(is.null(file_type)){
@@ -75,11 +68,6 @@ excel_to_doc_body <- function(path, document_name = NULL, verbose = T, file_type
     name = title,
     fields = fields
   )
-}
-
-doc_get_fields <- function(doc_id, api_key = get_api_key()) {
-  doc <- document_retrieve(doc_id, api_key)
-  tibble::tibble(fields = doc$fields) |> tidyr::unnest_wider("fields")
 }
 
 attachment_upload <- function(doc_body, attachment, api_key){
@@ -117,6 +105,7 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
   names(doc_body$fields) <- NULL
   return(doc_body)
 }
+
 #' Upload a html document to Rspace
 #'
 #' This function can upload a html document (e.g., generated from quarto) to an
@@ -152,10 +141,7 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
     })
   } else {
     # TODO Basic Document can have only 1 field
-    doc_body$fields <- purrr::map(doc_body$fields, ~ {
-      .x$content <- as.character(.x$content) |> paste(collapse = "\n")
-      .x
-    })
+    doc_body$fields <- put_all_fields_in_one_field(doc_body$fields)
   }
   # Add tags, form ID and attachments to doc_body
   doc_body <- add_information_to_doc_body(doc_body, template_id, folder_id, tags, attachment, api_key)
@@ -193,6 +179,18 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
 document_create_from_excel <- function(path, file_type = NULL, document_name = NULL, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
   doc_body <- excel_to_doc_body(path, document_name = document_name, verbose = F, file_type = file_type)
 
+  if(!is.null(existing_document_id)){
+    template_id <- existing_document_id
+  }
+  if(!is.null(template_id)) {
+    template_fields <- doc_get_fields(template_id)
+
+    if(length(doc_body$fields) != nrow(template_fields))
+      cli::cli_abort("Document has different number of fields ({length(doc_body_fields)}) than template ({nrow(template_fields)})")
+  } else {
+    # TODO Basic Document can have only 1 field
+    doc_body$fields <- put_all_fields_in_one_field(doc_body$fields)
+  }
   # Add tags, form ID and attachments to doc_body
   doc_body <- add_information_to_doc_body(doc_body, template_id = template_id, folder_id = folder_id, tags = tags, attachment = attachment)
 
