@@ -17,7 +17,7 @@ document_create_from_html(
 \arguments{
 \item{path}{html document to upload}
 
-\item{template_id}{document id of the RSpace template used}
+\item{template_id}{document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.}
 
 \item{folder_id}{folder_id in which the document will be created (can be a notebook)}
 

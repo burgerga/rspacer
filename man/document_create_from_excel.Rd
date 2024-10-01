@@ -6,6 +6,8 @@
 \usage{
 document_create_from_excel(
   path,
+  file_type = NULL,
+  document_name = NULL,
   template_id = NULL,
   folder_id = NULL,
   tags = NULL,
@@ -15,9 +17,25 @@ document_create_from_excel(
 )
 }
 \arguments{
-\item{path}{Tabular file}
+\item{path}{spreadsheet-like file to upload. Can be xlsx, csv or tsv}
+
+\item{file_type}{an optional character string to specify the file type. Will be guessed from the file name if not specified.}
+
+\item{document_name}{specify the name of the Rspace entry. If not specified,
+it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
+If that does not exist, it will be the file name.}
+
+\item{template_id}{document id of the RSpace template used}
+
+\item{folder_id}{folder_id in which the document will be created (can be a notebook)}
+
+\item{tags}{vector of tags to apply to the document}
+
+\item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
 
 \item{api_key}{RSpace API key}
+
+\item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
 }
 \description{
 This function can upload Excel/csv/tabular files to Rspace structured documents.
