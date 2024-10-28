@@ -98,26 +98,14 @@ res <- rspacer:::document_post(body_r)
 
 #### Create a structured document
 
-The `document_create_from_html()` is a wrapper around the previous `document_post` function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that the Template used MUST have the same number of fields as sections in the HTML file. Here, we describe how to create a document from a Quarto file.
-
-1.  Instructions to design a Template in Rspace can be found here: https://documentation.researchspace.com/article/wxfk9gf0a0-templates.
-2.  Create a Template from a Form with four text Fields named "Title", "Date", "Main part" and "Conclusion". Write down the unique Structured Document identifier, you will need it later.
-3.  In RStudio, go to File > New File > R Markdown.
-4.  On the left, click From Template.
-5.  Choose the rspacer Template example. Save the file as a Quarto file (.qmd).
-6.  Render the file to a html report.
-7.  Create a RSpace document using the code chunk below. It creates a document from your Template_example.html rendered file, and places the .qmd with the same name in the fourth field of the structured document. If no folder_id is specified, the function document_create_from_html() creates the document in the 'API Inbox'. Optionally, you can add tags or replace an entire document. Alternatively, you can open the rspacer R Markdown template `Tutorial document_create_from_html()`. This describes all steps in a bit more detail.
+The `document_create_from_html()` is a wrapper around the previous `document_post` function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that the Template used MUST have the same number of fields as sections in the HTML file. Detailed descriptions can be found in the [Tutorial document_create_from_html](https://burgerga.github.io/rspacer/articles/tutorial-document_create_from_html).
 
 ```{r}
 file_name <- here("docs/Template_example.html")
-matching_code_file <- str_replace(file_name, ".html$", ".qmd"))
+matching_code_file <- str_replace(file_name, ".html$", ".qmd")
 document_create_from_html(
     path = file_name,
-    template_id = "SD377682",
-    #folder_id = "",
-    #tags = c("", ""),
-    #existing_document_id = "",
-    attachment = list(field = 4, path = matching_code_file)
+    template_id = "SD377682"
 )
 ```
 

@@ -132,12 +132,9 @@ tibble(fields = res$fields) |>
 #> 8 Roles         text   ""
 ```
 
-#### Create
-
-**WORK IN PROGRESS**
+#### Create a document
 
 Creating documents is currently possible using the (unexported) low level `rspacer:::document_post()` function. For example, the following code will create a Basic Document in the 'ApiInbox' folder
-
 
 ```r
 # construct body
@@ -152,4 +149,18 @@ res <- rspacer:::document_post(body_r)
 #> Document created: <https://leiden.researchspace.com/globalId/SD376167>
 ```
 
-The `document_create_from_html()` is a wrapper around this function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that template used MUST have the same number of fields as sections in the HTML file. For more info see <https://community.researchspace.com/public/apiDocs> [POST /documents].
+The `document_create_from_html()` is a wrapper around the previous `document_post` function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that the Template used MUST have the same number of fields as sections in the HTML file. Detailed descriptions can be found in the [Tutorial document_create_from_html](https://burgerga.github.io/rspacer/articles/tutorial-document_create_from_html).
+
+```r
+file_name <- here("docs/Template_example.html")
+matching_code_file <- str_replace(file_name, ".html$", ".qmd")
+document_create_from_html(
+    path = file_name,
+    template_id = "SD377682"
+)
+#> Document created: <https://leiden.researchspace.com/globalId/SD389614>
+```
+
+**WORK IN PROGRESS**
+
+For more info see <https://community.researchspace.com/public/apiDocs> [POST /documents].
