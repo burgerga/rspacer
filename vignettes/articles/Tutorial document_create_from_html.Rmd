@@ -52,11 +52,11 @@ Alternatively, you can create a new Quarto document. Include the same headers as
 Rspacer needs to know which file you want to upload. In this tutorial, we want to create a structured document from the file "Template_example.html" that we made in Step 4, and we want to upload the .qmd file as an attachment. We recommend to work with relative paths from within an R project and specify these paths using the here package. If this is not what you want, you need to specify the absolute file path. The code below assumes that the html file and qmd file have the same filename. If this is not the case, change both the file_name and the matching_code_file variables.
 
 ``` r
-(file_name <- here("docs/Template_example.html"))
+(file_name <- here("vignettes/articles/Template_example.html"))
 ```
 
 ```         
-## [1] "C:/Users/hanneke/Documents/rspacer/docs/Template_example.html"
+## [1] "C:/Users/hanneke/Documents/rspacer/vignettes/articles/Template_example.html"
 ```
 
 ``` r
@@ -64,7 +64,7 @@ Rspacer needs to know which file you want to upload. In this tutorial, we want t
 ```
 
 ```         
-## [1] "C:/Users/hanneke/Documents/rspacer/docs/Template_example.qmd"
+## [1] "C:/Users/hanneke/Documents/rspacer/vignettes/articles/Template_example.qmd"
 ```
 
 ``` r
