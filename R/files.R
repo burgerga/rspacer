@@ -23,6 +23,9 @@ file_upload <- function(path, api_key = get_api_key()) {
 #' @param file_id gallery file to be downloaded
 #' @param path download destination
 #' @inheritParams api_status
+#' @returns The file path of the downloaded file. If the file already exists,
+#'          the user is asked whether the function should overwrite the pre-existing file.
+#'          If not, the download is canceled and `FALSE` is returned.
 #' @export
 file_download <- function(file_id, path = ".", api_key = get_api_key()) {
   if(fs::is_dir(path)) {
@@ -47,5 +50,5 @@ file_download <- function(file_id, path = ".", api_key = get_api_key()) {
     httr2::req_perform(path = path) |>
     httr2::resp_check_status() -> resp
   cli::cli_inform("Downloaded to {.path {resp$body}} ({file.size(resp$body)} bytes)")
-    return(invisible(TRUE))
+    return(invisible(path))
 }
