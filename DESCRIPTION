@@ -20,16 +20,19 @@ Imports:
     cli,
     curl,
     dplyr,
+    fs,
     glue,
     httr2,
     purrr,
     readr,
     readxl,
+    rlang,
     rvest,
     stringr,
     tibble,
     tidyr,
-    tools
+    tools,
+    xml2
 Suggests: 
     knitr,
     rmarkdown,
