@@ -2,7 +2,7 @@
 % Please edit documentation in R/mdtodoc.R
 \name{document_create_from_excel}
 \alias{document_create_from_excel}
-\title{Upload an Excel, csv or tsv document to Rspace}
+\title{Upload a tabular document to RSpace}
 \usage{
 document_create_from_excel(
   path,
@@ -17,11 +17,11 @@ document_create_from_excel(
 )
 }
 \arguments{
-\item{path}{spreadsheet-like file to upload. Can be xlsx, csv or tsv}
+\item{path}{tabular file to upload. Can be XLSX, CSV or TSV}
 
 \item{file_type}{an optional character string to specify the file type. Will be guessed from the file name if not specified.}
 
-\item{document_name}{specify the name of the Rspace entry. If not specified,
+\item{document_name}{specify the name of the RSpace entry. If not specified,
 it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
 If that does not exist, it will be the file name.}
 
@@ -38,9 +38,6 @@ If that does not exist, it will be the file name.}
 \item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
 }
 \description{
-This function can upload Excel/csv/tabular files to Rspace structured documents.
-The file needs to have exactly two columns, one with the Rspace structured document fields and one with the content.
-}
-\examples{
-excel_to_doc_body("assay_with_information.xlsx")
+This function can upload tabular files to RSpace structured documents.
+The file needs to have exactly two columns, one with the RSpace structured document fields and one with the content.
 }
