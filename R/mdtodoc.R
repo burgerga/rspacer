@@ -119,7 +119,8 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
 #' @param existing_document_id if you want to replace a document by a new one, specify the current identifier here.
 #' @inheritParams api_status
 #' @export
-document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
+document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL,
+                                      existing_document_id = NULL, api_key = get_api_key()) {
   doc_body <- html_to_doc_body(path, verbose = F)
 
   if(!is.null(existing_document_id)){
@@ -154,6 +155,95 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
   }
 
   return(invisible(json))
+}
+
+#' Add html content to an existing RSpace document
+#'
+#' Append a html document (e.g., generated from quarto) to an RSpace structured document.
+#' This function retrieves the current document, and adds text to fields specified by
+#' h2 html headers.
+#'
+#' @param path html document to be uploaded
+#' @param existing_document_id document identifier of the current RSpace document.
+#' @param tags vector of tags to apply to the document
+#' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
+#' @param allow_missing_fields Specify if a mismatch in fields is allowed.
+#' If this is `FALSE`, the html fields cannot be appended to the RSpace document when fields are missing.
+#' If it is `TRUE`, only fields with the same name as in the template will be appended.
+#' @inheritParams api_status
+#' @export
+document_append_from_html <- function(path, existing_document_id, tags = NULL, attachment = NULL,
+                                      allow_missing_fields = FALSE, api_key = get_api_key()) {
+  # Get the current fields
+  current_fields <- doc_get_fields(existing_document_id)
+
+  # Create a doc_body from the html file and process the fields to be put in a tibble
+  doc_body <- html_to_doc_body(path, verbose = F)
+  doc_body_types <- current_fields |>
+    dplyr::filter(name %in% names(doc_body$fields)) |>
+    dplyr::pull(type)
+
+  doc_body$fields <- purrr::map2(doc_body$fields, doc_body_types, ~ {
+    if(.y %in% c("string", "date")) {
+      .x$content <- rvest::html_text(.x$content)
+    } else {
+      .x$content <- as.character(.x$content) |> paste(collapse = "\n")
+    }
+    .x
+  })
+
+  # Convert doc_body to a tibble
+  new_fields <- fields_to_data_frame(doc_body$fields)
+
+  # Warn users when fields are missing in the html that are present in the existing document
+  if(length(setdiff(current_fields$name, new_fields$name)) > 0){
+    if(allow_missing_fields){
+      cli::cli_warn(message = paste0("Some fields are missing in the html to append: ",
+        paste0(setdiff(current_fields$name, new_fields$name), collapse = ", "),
+        ". Other fields will be added."))
+    } else{
+      cli::cli_abort(message = paste0("Some fields are missing in the html to append: ",
+        paste0(setdiff(current_fields$name, new_fields$name), collapse = ", "),
+        ". Specify allow_missing_fields = T if you still want to append the matching fields.",
+        collapse = ", "))
+    }
+  }
+  # Warn users when fields are missing in the existing document that are in the html
+  if(length(setdiff(new_fields$name, current_fields$name)) > 0){
+    if(allow_missing_fields){
+      cli::cli_warn(message = paste0("The following fields are not in the RSpace document: ",
+        paste0(setdiff(new_fields$name, current_fields$name), collapse = ", "),
+        ". These will be ignored."))
+    } else{
+      cli::cli_abort(message = paste0("The following fields are not in the RSpace document: ",
+        paste0(setdiff(new_fields$name, current_fields$name), collapse = ", "),
+        ". Specify allow_missing_fields = T if you want to ignore these missing fields.",
+        collapse = ", "))
+    }
+  }
+
+  # Merge the old and new fields.
+  new_fields <- left_join(current_fields, new_fields, by = "name") |>
+    dplyr::filter(!is.na(content.y) | content.y != "") |>
+    tidyr::unite(content, content.x, content.y, sep = "\n", na.rm = T) |>
+    dplyr::mutate(id = as.character(id))
+
+  # Create a nested list with the new contents and identifiers
+  doc_body$fields <- data_frame_to_fields(new_fields)
+
+  # Update tags and upload attachments
+  if(!is.null(tags)) {
+    doc_body$tags <- paste(tags, collapse = ",")
+  }
+
+  if(!is.null(attachment)) {
+    # TODO maybe use the columnIndex because I already removed all non-altered field numbers?
+    doc_body <- attachment_upload(doc_body, attachment, api_key)
+  }
+
+  # Replace old fields with new fields
+  json <- document_replace(doc_body, existing_document_id)
+  return(json)
 }
 
 #' Upload a tabular document to RSpace
