@@ -10,8 +10,8 @@ document_create_from_html(
   folder_id = NULL,
   tags = NULL,
   attachment = NULL,
-  api_key = get_api_key(),
-  existing_document_id = NULL
+  existing_document_id = NULL,
+  api_key = get_api_key()
 )
 }
 \arguments{
@@ -25,9 +25,9 @@ document_create_from_html(
 
 \item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
 
-\item{api_key}{RSpace API key}
-
 \item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
+
+\item{api_key}{RSpace API key}
 }
 \description{
 This function can upload a html document (e.g., generated from quarto) to an
