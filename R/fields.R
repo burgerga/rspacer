@@ -27,7 +27,9 @@ doc_get_fields <- function(doc_id, api_key = get_api_key()) {
 #' @param use_html_sep If `TRUE`, each field is placed in a html paragraph, with </p> and <p>
 #' @returns a list with one field, with only content, all contents from other fields, separated by `\n`.
 #' @examples
+#' \dontrun{
 #' doc_body$fields <- put_all_fields_in_one_field(doc_body$fields)
+#' }
 #'
 put_all_fields_in_one_field <- function(doc_body_fields, use_html_sep = T){
   text_content <- fields_to_data_frame(doc_body_fields)

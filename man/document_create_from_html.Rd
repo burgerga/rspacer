@@ -2,7 +2,7 @@
 % Please edit documentation in R/mdtodoc.R
 \name{document_create_from_html}
 \alias{document_create_from_html}
-\title{Upload a html document to Rspace}
+\title{Upload a html document to RSpace}
 \usage{
 document_create_from_html(
   path,
@@ -31,5 +31,5 @@ document_create_from_html(
 }
 \description{
 This function can upload a html document (e.g., generated from quarto) to an
-Rspace Basic Document, or to a Structured Document if the template is also provided.
+RSpace Basic Document, or to a Structured Document if the template is also provided.
 }
