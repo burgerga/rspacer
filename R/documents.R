@@ -81,3 +81,43 @@ doc_to_form_id <- function(doc_id, verbose = T, api_key = get_api_key()) {
   }
   json$form$globalId
 }
+
+#'
+#' List attachments of a structured document
+#'
+#' This function lists all attachments of a field in a structured document.
+#'
+#' @param doc_id Unique identifier of the document
+#' @param field_id Specify either `field_id` or `field_name`. Identifier for the
+#' fields where attachments are listed. This identifier is relative, for example 1
+#' for the top field, 2 for the second field, etc. It is not the unique field identifier.
+#' @param field_name Specify either `field_id` or `field_name`. The field name
+#' for which attachments need to be listed.
+#' @inheritParams api_status
+#' @return A data frame with identifiers and information on attachments.
+#' Returns `FALSE` if no files are attached to the field.
+#' @export
+document_list_attachments <- function(doc_id, field_id = NULL, field_name = NULL, api_key = get_api_key()) {
+  if(is.null(doc_id)) cli::cli_abort("Specify the documnt identifier `doc_id`")
+  # Check field id and/or name
+  if(is.null(field_id)& is.null(field_name)) cli::cli_abort("Specify `field_id` or `field_name`")
+  if(!is.null(field_id)& !is.null(field_name)) cli::cli_abort("Specify only `field_id` or `field_name`")
+  if(!is.null(field_id) & !is.numeric(field_id)) cli::cli_abort("`field_id` should be a number")
+  if(!is.null(field_name) & !is.character(field_name)) cli::cli_abort("`field_name` should be a string")
+
+  fields <- doc_get_fields(doc_id)
+
+  if(!is.null(field_name)) fields <- dplyr::filter(fields, name == field_name)
+  if(!is.null(field_id))   fields <- fields[field_id,]
+
+  fields |>
+    dplyr::pull(files) |>
+    unlist(recursive = F) -> files
+  # Return FALSE if no files are attached
+  if(is.null(files)) return(FALSE)
+
+  files |>
+    fields_to_data_frame() -> attachment_list
+  return(attachment_list)
+
+}
