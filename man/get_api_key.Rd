@@ -11,7 +11,7 @@ Gets the RSpace API key from the \code{RSPACE_API_KEY} environment variable.
 See \code{\link[=set_api_key]{set_api_key()}} on how to set it.
 }
 \examples{
-\donttest{
+\dontrun{
 get_api_key()
 }
 

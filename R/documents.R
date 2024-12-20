@@ -14,7 +14,7 @@ document_retrieve <- function(doc_id, api_key = get_api_key()) {
 }
 
 document_post <- function(body, api_key = get_api_key()) {
-  body$tags <- paste0(c("rspacer", body$tags), collapse= ",")
+  body$tags <- paste0(c("rspacer", body$tags), collapse = ",")
   request() |>
     httr2::req_url_path_append("documents") |>
     httr2::req_headers(`apiKey` = api_key) |>
@@ -28,7 +28,7 @@ document_post <- function(body, api_key = get_api_key()) {
 }
 
 document_replace <- function(body, existing_document_id, api_key = get_api_key()) {
-  ifelse("rspacer" %in% stringr::str_split_1(body$tags, ","), body$tags, paste0(c("rspacer", body$tags), collapse= ","))
+  ifelse("rspacer" %in% stringr::str_split_1(body$tags, ","), body$tags, paste0(c("rspacer", body$tags), collapse = ","))
   request() |>
     httr2::req_url_path_append("documents", parse_rspace_id(existing_document_id)) |>
     httr2::req_headers(`apiKey` = api_key) |>
@@ -45,7 +45,8 @@ document_replace <- function(body, existing_document_id, api_key = get_api_key()
 #'
 #' Global search for a term
 #'
-#' Global search for a term, works identically to the simple "All" search in RSpace Workspace. Must be >= 3 characters long.
+#' Global search for a term, works identically to the simple "All" search in RSpace Workspace.
+#' Must be >= 3 characters long.
 #'
 #' @param query  description
 #' @param ... query parameters as documented in
@@ -71,9 +72,9 @@ document_search <- function(query, ..., api_key = get_api_key()) {
 #' @param verbose whether to print the matching document/form
 #' @inheritParams document_retrieve
 #' @export
-doc_to_form_id <- function(doc_id, verbose = T, api_key = get_api_key()) {
+doc_to_form_id <- function(doc_id, verbose = TRUE, api_key = get_api_key()) {
   json <- document_retrieve(doc_id, api_key)
-  if(verbose) {
+  if (verbose) {
     cli::cli_inform(c(
       "{.field Document}: {json$globalId} ({json$name})",
       "{.field Form}:\t {json$form$globalId} ({json$form$name})"
@@ -98,26 +99,27 @@ doc_to_form_id <- function(doc_id, verbose = T, api_key = get_api_key()) {
 #' Returns `FALSE` if no files are attached to the field.
 #' @export
 document_list_attachments <- function(doc_id, field_id = NULL, field_name = NULL, api_key = get_api_key()) {
-  if(is.null(doc_id)) cli::cli_abort("Specify the documnt identifier `doc_id`")
+  if (is.null(doc_id)) cli::cli_abort("Specify the documnt identifier `doc_id`")
   # Check field id and/or name
-  if(is.null(field_id)& is.null(field_name)) cli::cli_abort("Specify `field_id` or `field_name`")
-  if(!is.null(field_id)& !is.null(field_name)) cli::cli_abort("Specify only `field_id` or `field_name`")
-  if(!is.null(field_id) & !is.numeric(field_id)) cli::cli_abort("`field_id` should be a number")
-  if(!is.null(field_name) & !is.character(field_name)) cli::cli_abort("`field_name` should be a string")
+  if (is.null(field_id) && is.null(field_name)) cli::cli_abort("Specify `field_id` or `field_name`")
+  if (!is.null(field_id) && !is.null(field_name)) cli::cli_abort("Specify only `field_id` or `field_name`")
+  if (!is.null(field_id) && !is.numeric(field_id)) cli::cli_abort("`field_id` should be a number")
+  if (!is.null(field_name) && !is.character(field_name)) cli::cli_abort("`field_name` should be a string")
 
   fields <- doc_get_fields(doc_id)
 
-  if(!is.null(field_name)) fields <- dplyr::filter(fields, name == field_name)
-  if(!is.null(field_id))   fields <- fields[field_id,]
+  if (!is.null(field_name)) fields <- dplyr::filter(fields, name == field_name)
+  if (!is.null(field_id)) fields <- fields[field_id, ]
 
   fields |>
     dplyr::pull(files) |>
     unlist(recursive = F) -> files
   # Return FALSE if no files are attached
-  if(is.null(files)) return(FALSE)
+  if (is.null(files)) {
+    return(FALSE)
+  }
 
   files |>
     fields_to_data_frame() -> attachment_list
   return(attachment_list)
-
 }

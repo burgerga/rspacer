@@ -28,7 +28,7 @@ file_upload <- function(path, api_key = get_api_key()) {
 #'          If not, the download is canceled and `FALSE` is returned.
 #' @export
 file_download <- function(file_id, path = ".", api_key = get_api_key()) {
-  if(fs::is_dir(path)) {
+  if (fs::is_dir(path)) {
     # determine file name
     request() |>
       httr2::req_url_path_append("files", parse_rspace_id(file_id)) |>
@@ -39,7 +39,7 @@ file_download <- function(file_id, path = ".", api_key = get_api_key()) {
     path <- fs::path(path, json$name)
   }
 
-  if(!can_overwrite(path)) {
+  if (!can_overwrite(path)) {
     cli::cli_inform(" Cancelling download")
     return(invisible(FALSE))
   }
@@ -50,5 +50,5 @@ file_download <- function(file_id, path = ".", api_key = get_api_key()) {
     httr2::req_perform(path = path) |>
     httr2::resp_check_status() -> resp
   cli::cli_inform("Downloaded to {.path {resp$body}} ({file.size(resp$body)} bytes)")
-    return(invisible(path))
+  return(invisible(path))
 }

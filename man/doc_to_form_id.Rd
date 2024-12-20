@@ -4,7 +4,7 @@
 \alias{doc_to_form_id}
 \title{Get the form id used for a document}
 \usage{
-doc_to_form_id(doc_id, verbose = T, api_key = get_api_key())
+doc_to_form_id(doc_id, verbose = TRUE, api_key = get_api_key())
 }
 \arguments{
 \item{doc_id}{Unique identifier of the document}

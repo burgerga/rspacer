@@ -43,7 +43,9 @@ ui_yes <- function(x, .envir = parent.frame()) {
 }
 
 can_overwrite <- function(path) {
-  if(!fs::file_exists(path)) return(TRUE)
+  if (!fs::file_exists(path)) {
+    return(TRUE)
+  }
 
   ui_yes("Overwrite pre-existing file {.file {path}}?")
 }
