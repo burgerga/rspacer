@@ -11,7 +11,7 @@ Gets the RSpace API URL from the \code{RSPACE_API_URL} environment variable.
 See \code{\link[=set_api_url]{set_api_url()}} on how to set it.
 }
 \examples{
-\donttest{
+\dontrun{
 get_api_url()
 }
 
