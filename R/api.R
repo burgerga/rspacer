@@ -5,7 +5,7 @@
 #' See [set_api_url()] on how to set it.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' get_api_url()
 #' }
 #'
@@ -50,7 +50,7 @@ set_api_url <- function(rspace_api_url) {
 #' See [set_api_key()] on how to set it.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' get_api_key()
 #' }
 #'
@@ -109,7 +109,9 @@ request <- function() {
 #' @param api_key RSpace API key
 #'
 #' @examples
+#' \dontrun{
 #' api_status()
+#' }
 #'
 #' @export
 api_status <- function(api_key = get_api_key()) {

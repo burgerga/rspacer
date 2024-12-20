@@ -13,6 +13,8 @@ api_status(api_key = get_api_key())
 Function to check availability of the API service
 }
 \examples{
+\dontrun{
 api_status()
+}
 
 }
