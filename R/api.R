@@ -109,7 +109,9 @@ request <- function() {
 #' @param api_key RSpace API key
 #'
 #' @examples
+#' \dontrun{
 #' api_status()
+#' }
 #'
 #' @export
 api_status <- function(api_key = get_api_key()) {
