@@ -23,21 +23,32 @@ test_that("fields_to_data_frame creates a tibble", {
 
 test_that("doc_get_fields creates a fields data frame", {
   local_mocked_bindings(
-    get_api_key = function() return("API key used for testing"),
-    document_retrieve = function(doc_id, api_key = get_api_key()){
-      helper_larger_structured_document()
+    get_api_key = function() {
+      return("API key used for testing")
+    },
+    document_retrieve = function(doc_id, api_key = get_api_key()) {
+      helper_larger_SD()
     }
   )
-  expect_equal(doc_get_fields("some incorrect id"),
-               fields_to_data_frame(helper_larger_structured_document()$fields))
+  expect_equal(
+    doc_get_fields("some incorrect id"),
+    fields_to_data_frame(helper_larger_SD()$fields)
+  )
 })
 
 test_that("put_all_fields_in_one_field can collapse fields", {
   # Rspace needs a list with a list with at least content.
   fields <- helper_get_fields()
-  expect_equal(put_all_fields_in_one_field(fields),
-               list(list(content = "<p>The title</p>\n<p>test</p>\n<p>small title</p>\n<p>smaller name</p>\n<p>25-09-2024</p>\n<p>creating fields</p>")))
-  expect_equal(put_all_fields_in_one_field(fields, use_html_sep = F),
-               list(list(content = "The title\ntest\nsmall title\nsmaller name\n25-09-2024\ncreating fields")))
-  # TODO run with fields in helper_small_structured_document and helper_larger_structured_document
+  expect_equal(
+    put_all_fields_in_one_field(fields),
+    list(list(
+      content =
+        "<p>The title</p>\n<p>test</p>\n<p>small title</p>\n<p>smaller name</p>\n<p>25-09-2024</p>\n<p>creating fields</p>"
+    ))
+  )
+  expect_equal(
+    put_all_fields_in_one_field(fields, use_html_sep = FALSE),
+    list(list(content = "The title\ntest\nsmall title\nsmaller name\n25-09-2024\ncreating fields"))
+  )
+  # TODO run with fields in helper_small_SD and helper_larger_SD
 })

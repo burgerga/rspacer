@@ -5,7 +5,6 @@ test_that("parsing rspace ids works", {
   expect_equal(parse_rspace_id("GL258158"), 258158)
   expect_equal(parse_rspace_id("FL242398"), 242398)
   expect_equal(parse_rspace_id("NB242194"), 242194)
-  # expect_equal(parse_rspace_id("https://leiden.researchspace.com/globalId/SD242392"), 242392)
 })
 
 test_that("is_url works", {
