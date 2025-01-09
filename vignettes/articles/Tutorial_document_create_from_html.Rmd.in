@@ -1,0 +1,104 @@
+---
+title: "Tutorial document_create_from_html()"
+---
+
+## Before you start
+
+In this tutorial, we describe how to create an Rspace structured document from a Quarto file. We advice you to read the rspacer Get started website on <https://burgerga.github.io/rspacer/index.html> to make sure that you are ready to use this upload document. You need to install rspacer and set up your API url and API key before the start of this tutorial.
+
+## 1. Load R libraries
+
+```{r}
+library(tidyverse)
+library(here)
+library(rspacer)
+```
+
+## 2. Check if the API is available
+
+This code checks if the API is available. The API status should be OK.
+
+```{r}
+(res <- api_status())
+stopifnot(res$message == "OK")
+```
+
+## 3. Create a structured document in Rspace
+
+Create a Template from a Form with four text Fields named "Title", "Date", "Main part" and "Conclusion". Write down the unique Structured Document identifier, you will need it later. Instructions to design a Template in Rspace can be found here: <https://documentation.researchspace.com/article/wxfk9gf0a0-templates>.
+
+## 4. Create a small example document
+
+1.  The rspacer package has an example file. In RStudio, go to File \> New File \> R Markdown. At the moment (28-10-2024) there is not yet an option to create Quarto files from template, which is why we chose to provide the file as an R Markdown template.
+2.  On the left, click From Template.
+3.  Choose the rspacer Template example. Save the file as a Quarto file (.qmd).
+4.  Render the file to a html report.
+
+Alternatively, you can create a new Quarto document. Include the same headers as the Rspace Template that you previously created in Step 3, and make sure that these headers all have two hashtags (h2 headers, with \##). You can write any code, or use h3 or h4 headers (with three or four hashtags), as long the `h2` headers are identical to your structured document template.
+
+## Specify the file name of the file to upload
+
+Rspacer needs to know which file you want to upload. In this tutorial, we want to create a structured document from the file "Template_example.html" that we made in Step 4, and we want to upload the .qmd file as an attachment. We recommend to work with relative paths from within an R project and specify these paths using the here package. If this is not what you want, you need to specify the absolute file path. The code below assumes that the html file and qmd file have the same filename. If this is not the case, change both the file_name and the matching_code_file variables.
+
+```{r}
+(file_name <- here("man/example/Template_example.html"))
+(matching_code_file <- str_replace(file_name, ".html$", ".qmd"))
+stopifnot(file.exists(file_name))
+stopifnot(file.exists(matching_code_file))
+```
+
+## Specify the template and folder to upload to
+
+You can 'walk' through folders until you find the folder or notebook where you want to upload the Structured Document, using the folder_tree() function in rspacer. If you want to replace a file, also define the existing file id. If you have a more complicated document than a Basic Document, you have to specify the identifier of the Template as well. Folder identifiers start with FL. Notebook identifiers start with NB. Structured document identifiers start with SD.
+
+```{r}
+folder_tree()
+#folder_tree("") # Specify folder ID in brackets to keep walking.
+
+folder_id <- "" # Specify folder ID for upload
+template_id <- "" # SD identifier of the template
+field_nr_for_code <- 0 # Specify the field in which the code file needs to be attached.
+existing_file_id <- "" # Optional, used if one wants to replace a file. Leave empty string if no file needs to be created.
+
+tags <- c("") # You can add multiple tags in a vector. For example a grant number, or "finished" or "in progress" or "failed".
+```
+
+### Upload the file
+
+Create an RSpace document using the code chunk below. It creates a document from your Template_example.html rendered file, and places the .qmd with the same name in the fourth field of the structured document. If no folder_id is specified, the function document_create_from_html() creates the document in the 'API Inbox'. Optionally, you can add tags or replace an entire document. Make sure that the template_id is the identifier of the template that you previously made in Rspace. To upload the document and attachment to the API inbox, this code chunk is sufficient:
+
+```{r}
+document_create_from_html(
+    path = file_name,
+    template_id = "SD377682"
+)
+```
+
+The function document_create_from_html has more parameters, for example to upload the document to the specified notebook or folder. If you want to upload a code file as well, it will be added in the number of the field as an attachment. Use the existing_file_id only if a file needs to be replaced instead of created.
+
+```{r}
+if(existing_file_id == ""){
+  document_create_from_html(
+    path = file_name,
+    template_id = template_id,
+    folder_id = folder_id,
+    tags = tags,
+    attachment = list(field = field_nr_for_code, path = matching_code_file)
+  )
+} else {
+  document_create_from_html(
+    path = file_name,
+    template_id = template_id,
+    folder_id = folder_id,
+    tags = tags,
+    attachment = list(field = field_nr_for_code, path = matching_code_file),
+    existing_file_id  = existing_file_id
+  )
+}
+```
+
+## Session info
+
+```{r}
+sessionInfo()
+```
