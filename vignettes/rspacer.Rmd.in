@@ -2,7 +2,7 @@
 title: "Introduction to rspacer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{RSpaceR}
+  %\VignetteIndexEntry{rspacer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,9 +24,9 @@ The goal of rspacer is to "wrap" the [RSpace API](https://community.researchspac
 To use rspacer it needs to know two things:
 
 1. The API URL for your RSpace instance (this is typically the URL of your RSpace instance followed by `api/v1`, e.g. https://leiden.researchspace.com/api/v1)
-2. Your API key, which is an authentication token you can use instead of your username and password. To create an API key go to 'Manage API Key' section of your RSpace profile page (MyRSpace -> Profile). **You should keep your API key private.** You can regenerate API key at any time, which will invalidate the old key.
+2. Your API key, which is an authentication token you can use instead of your username and password. To create an API key go to 'Manage API Key' section of your RSpace profile page (MyRSpace -> My Profile). **You should keep your API key private.** You can regenerate an API key at any time, which will invalidate the old key.
 
-You can use the `set_api_url()` and `set_api_key()` function to make these available to rspacer in the current session.
+You can use the `set_api_url()` and `set_api_key()` functions to make these available to rspacer in the current session.
 To make this information persistent you can store it in environment variables. An easy way to do this is with `usethis::edit_r_environ()`; in the file that opens, you should add the following lines (insert your own URL and key):
 
 ```
@@ -82,7 +82,7 @@ tibble(fields = res$fields) |>
 
 **WORK IN PROGRESS**
 
-Creating documents is currently possible using the (unexported) low level `rspacer:::document_post()` function. For example, the following code will create a Basic Document in the 'ApiInbox' folder
+Creating documents is currently possible using the (unexported) low level `rspacer:::document_post()` function. For example, the following code will create a Basic Document in the 'Api Inbox' folder
 
 ```{r}
 # construct body
@@ -96,4 +96,17 @@ body_r <- list(
 res <- rspacer:::document_post(body_r)
 ```
 
-The `document_create_from_html()` is a wrapper around this function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that template used MUST have the same number of fields as sections in the HTML file. For more info see <https://community.researchspace.com/public/apiDocs> [POST /documents].
+#### Create a structured document
+
+The `document_create_from_html()` is a wrapper around the previous `document_post` function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that the Template used MUST have the same number of fields as sections in the HTML file. Detailed descriptions can be found in the [Tutorial document_create_from_html](https://burgerga.github.io/rspacer/articles/tutorial-document_create_from_html).
+
+```{r}
+file_name <- here("vignettes/articles/Template_example.html")
+matching_code_file <- str_replace(file_name, ".html$", ".qmd")
+document_create_from_html(
+    path = file_name,
+    template_id = "SD377682"
+)
+```
+
+For more info see <https://community.researchspace.com/public/apiDocs> [POST /documents].
