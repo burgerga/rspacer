@@ -25,6 +25,7 @@ doc_get_fields <- function(doc_id, api_key = get_api_key()) {
 #' Put a list of fields into one field. This can be needed when no Structured
 #' Document template is specified and a Basic Document is used, but the
 #' html/excel/other input has multiple subheaders or fields.
+#' @keywords internal
 #' @param doc_body_fields multiple fields in a list
 #' @param use_html_sep If `TRUE`, each field is placed in a html paragraph, with </p> and <p>
 #' @returns a list with one field, with only content, all contents from other fields, separated by `\n`.
