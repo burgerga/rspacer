@@ -2,6 +2,7 @@
 <url><loc>https://burgerga.github.io/rspacer/404.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/LICENSE-text.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/LICENSE.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/articles/Tutorial_document_create_from_html.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/articles/index.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/articles/rspacer.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/authors.html</loc></url>
@@ -9,7 +10,10 @@
 <url><loc>https://burgerga.github.io/rspacer/news/index.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/api_status.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/doc_to_form_id.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/document_append_from_html.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/document_create_from_excel.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/document_create_from_html.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/document_list_attachments.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/document_retrieve.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/document_search.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/file_download.html</loc></url>
@@ -18,6 +22,7 @@
 <url><loc>https://burgerga.github.io/rspacer/reference/get_api_key.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/get_api_url.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/index.html</loc></url>
+<url><loc>https://burgerga.github.io/rspacer/reference/put_all_fields_in_one_field.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/set_api_key.html</loc></url>
 <url><loc>https://burgerga.github.io/rspacer/reference/set_api_url.html</loc></url>
 </urlset>
