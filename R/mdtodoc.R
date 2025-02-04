@@ -31,13 +31,13 @@ excel_rspace_document_name <- function(path, sections, document_name = NULL) {
     if (!is.character(document_name)) cli::cli_abort(message = c("x" = "Document name should be a character string or NULL"))
     title <- document_name
   } else if ("Title" %in% sections$name) {
-    title <- dplyr::filter(sections, name == "Title") |> dplyr::pull(content)
+    title <- dplyr::filter(sections, .data$name == "Title") |> dplyr::pull(.data$content)
   } else if ("Name" %in% sections$name) {
-    title <- dplyr::filter(sections, name == "Name") |> dplyr::pull(content)
+    title <- dplyr::filter(sections, .data$name == "Name") |> dplyr::pull(.data$content)
   } else if ("title" %in% sections$name) {
-    title <- dplyr::filter(sections, name == "title") |> dplyr::pull(content)
+    title <- dplyr::filter(sections, .data$name == "title") |> dplyr::pull(.data$content)
   } else if ("name" %in% sections$name) {
-    title <- dplyr::filter(sections, name == "name") |> dplyr::pull(content)
+    title <- dplyr::filter(sections, .data$name == "name") |> dplyr::pull(.data$content)
   } else {
     title <- tools::file_path_sans_ext(path) |> basename()
   }
@@ -183,8 +183,8 @@ document_append_from_html <- function(path, existing_document_id, tags = NULL, a
   # Create a doc_body from the html file and process the fields to be put in a tibble
   doc_body <- html_to_doc_body(path, verbose = F)
   doc_body_types <- current_fields |>
-    dplyr::filter(name %in% names(doc_body$fields)) |>
-    dplyr::pull(type)
+    dplyr::filter(.data$name %in% names(doc_body$fields)) |>
+    dplyr::pull(.data$type)
 
   doc_body$fields <- purrr::map2(doc_body$fields, doc_body_types, ~ {
     if (.y %in% c("string", "date")) {
@@ -232,9 +232,9 @@ document_append_from_html <- function(path, existing_document_id, tags = NULL, a
 
   # Merge the old and new fields.
   new_fields <- dplyr::left_join(current_fields, new_fields, by = "name") |>
-    dplyr::filter(!is.na(content.y) | content.y != "") |>
-    tidyr::unite(content, content.x, content.y, sep = "\n", na.rm = T) |>
-    dplyr::mutate(id = as.character(id))
+    dplyr::filter(!is.na(.data$content.y) | .data$content.y != "") |>
+    tidyr::unite("content", .data$content.x, .data$content.y, sep = "\n", na.rm = T) |>
+    dplyr::mutate(id = as.character(.data$id))
 
   # Create a nested list with the new contents and identifiers
   doc_body$fields <- data_frame_to_fields(new_fields)

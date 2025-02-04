@@ -108,7 +108,7 @@ document_list_attachments <- function(doc_id, field_id = NULL, field_name = NULL
 
   fields <- doc_get_fields(doc_id)
 
-  if (!is.null(field_name)) fields <- dplyr::filter(fields, name == field_name)
+  if (!is.null(field_name)) fields <- dplyr::filter(fields, .data$name == field_name)
   if (!is.null(field_id)) fields <- fields[field_id, ]
 
   fields |>
