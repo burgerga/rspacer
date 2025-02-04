@@ -30,7 +30,11 @@ cli_hyperlink <- function(url, ...) {
 }
 
 is_url <- function(x) {
-  is.character(x) && !is.null(httr2::url_parse(x)$scheme)
+  tryCatch({
+    httr2::url_parse(x)$scheme
+    TRUE
+  },
+  error = function(e) return(FALSE))
 }
 
 ui_yes <- function(x, .envir = parent.frame()) {
