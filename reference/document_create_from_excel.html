@@ -54,7 +54,7 @@ The file needs to have exactly two columns, one with the RSpace structured docum
 <span>  template_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  folder_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tags <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  attachment <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  attachments <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="fu"><a href="get_api_key.html">get_api_key</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  existing_document_id <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -79,7 +79,7 @@ If that does not exist, it will be the file name.</p></dd>
 
 
 <dt id="arg-template-id">template_id<a class="anchor" aria-label="anchor" href="#arg-template-id"></a></dt>
-<dd><p>document id of the RSpace template used</p></dd>
+<dd><p>document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.</p></dd>
 
 
 <dt id="arg-folder-id">folder_id<a class="anchor" aria-label="anchor" href="#arg-folder-id"></a></dt>
@@ -90,8 +90,8 @@ If that does not exist, it will be the file name.</p></dd>
 <dd><p>vector of tags to apply to the document</p></dd>
 
 
-<dt id="arg-attachment">attachment<a class="anchor" aria-label="anchor" href="#arg-attachment"></a></dt>
-<dd><p>attachment to attach to one of the fields, e.g., <code>list(field = 7, path = "file.txt")</code></p></dd>
+<dt id="arg-attachments">attachments<a class="anchor" aria-label="anchor" href="#arg-attachments"></a></dt>
+<dd><p>attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., <code>tibble(field = 7, path = "file.txt")</code></p></dd>
 
 
 <dt id="arg-api-key">api_key<a class="anchor" aria-label="anchor" href="#arg-api-key"></a></dt>

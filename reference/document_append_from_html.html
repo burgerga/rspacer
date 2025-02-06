@@ -54,7 +54,7 @@ h2 html headers.</p>
 <span>  <span class="va">path</span>,</span>
 <span>  <span class="va">existing_document_id</span>,</span>
 <span>  tags <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  attachment <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  attachments <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  allow_missing_fields <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="fu"><a href="get_api_key.html">get_api_key</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -65,7 +65,7 @@ h2 html headers.</p>
 
 
 <dl><dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
-<dd><p>html document to be uploaded</p></dd>
+<dd><p>html document to upload</p></dd>
 
 
 <dt id="arg-existing-document-id">existing_document_id<a class="anchor" aria-label="anchor" href="#arg-existing-document-id"></a></dt>
@@ -76,8 +76,8 @@ h2 html headers.</p>
 <dd><p>vector of tags to apply to the document</p></dd>
 
 
-<dt id="arg-attachment">attachment<a class="anchor" aria-label="anchor" href="#arg-attachment"></a></dt>
-<dd><p>attachment to attach to one of the fields, e.g., <code>list(field = 7, path = "file.txt")</code></p></dd>
+<dt id="arg-attachments">attachments<a class="anchor" aria-label="anchor" href="#arg-attachments"></a></dt>
+<dd><p>attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., <code>tibble(field = 7, path = "file.txt")</code></p></dd>
 
 
 <dt id="arg-allow-missing-fields">allow_missing_fields<a class="anchor" aria-label="anchor" href="#arg-allow-missing-fields"></a></dt>

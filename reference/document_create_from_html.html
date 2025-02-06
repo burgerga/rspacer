@@ -52,7 +52,7 @@ RSpace Basic Document, or to a Structured Document if the template is also provi
 <span>  template_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  folder_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tags <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  attachment <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  attachments <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  existing_document_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="fu"><a href="get_api_key.html">get_api_key</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -78,8 +78,8 @@ RSpace Basic Document, or to a Structured Document if the template is also provi
 <dd><p>vector of tags to apply to the document</p></dd>
 
 
-<dt id="arg-attachment">attachment<a class="anchor" aria-label="anchor" href="#arg-attachment"></a></dt>
-<dd><p>attachment to attach to one of the fields, e.g., <code>list(field = 7, path = "file.txt")</code></p></dd>
+<dt id="arg-attachments">attachments<a class="anchor" aria-label="anchor" href="#arg-attachments"></a></dt>
+<dd><p>attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., <code>tibble(field = 7, path = "file.txt")</code></p></dd>
 
 
 <dt id="arg-existing-document-id">existing_document_id<a class="anchor" aria-label="anchor" href="#arg-existing-document-id"></a></dt>
