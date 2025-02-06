@@ -107,10 +107,7 @@ document_list_attachments <- function(doc_id, field_id = NULL, field_name = NULL
   if (!is.null(field_name) && !is.character(field_name)) cli::cli_abort("`field_name` should be a string")
 
   fields <- doc_get_fields(doc_id)
-
-
   if (!is.null(field_name)) fields <- dplyr::filter(fields, .data$name == field_name)
-
   if (!is.null(field_id)) fields <- fields[field_id, ]
 
   fields |>
