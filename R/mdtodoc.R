@@ -133,7 +133,7 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
     template_fields <- doc_get_fields(template_id)
 
     if (length(doc_body$fields) != nrow(template_fields)) {
-      cli::cli_abort("Document has different number of fields ({length(doc_body_fields)}) than template ({nrow(template_fields)})")
+      cli::cli_abort("Document has different number of fields ({length(doc_body$fields)}) than template ({nrow(template_fields)})")
     }
     doc_body$fields <- purrr::map2(doc_body$fields, template_fields$type, ~ {
       if (.y %in% c("string", "date")) {
@@ -282,7 +282,7 @@ document_create_from_excel <- function(path, file_type = NULL, document_name = N
     template_fields <- doc_get_fields(template_id)
 
     if (length(doc_body$fields) != nrow(template_fields)) {
-      cli::cli_abort("Document has different number of fields ({length(doc_body_fields)}) than template ({nrow(template_fields)})")
+      cli::cli_abort("Document has different number of fields ({length(doc_body$fields)}) than template ({nrow(template_fields)})")
     }
   } else {
     # TODO Basic Document can have only 1 field
