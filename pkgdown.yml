@@ -2,9 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  articles/create_document_from_html: create_document_from_html.html
   rspacer: rspacer.html
-  articles/Tutorial_document_create_from_html: Tutorial_document_create_from_html.html
-last_built: 2025-01-14T13:50Z
+last_built: 2025-02-06T12:17Z
 urls:
   reference: https://burgerga.github.io/rspacer/reference
   article: https://burgerga.github.io/rspacer/articles
