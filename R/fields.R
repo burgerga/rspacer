@@ -1,4 +1,4 @@
-# Functions to process Rspace structured document fields
+# Functions to process RSpace structured document fields
 
 data_frame_to_fields <- function(fields_data_frame) {
   fields <- lapply(1:nrow(fields_data_frame), function(row_nr) {
