@@ -9,7 +9,7 @@ document_create_from_html(
   template_id = NULL,
   folder_id = NULL,
   tags = NULL,
-  attachment = NULL,
+  attachments = NULL,
   existing_document_id = NULL,
   api_key = get_api_key()
 )
@@ -23,7 +23,7 @@ document_create_from_html(
 
 \item{tags}{vector of tags to apply to the document}
 
-\item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+\item{attachments}{attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
 \item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
 

@@ -11,7 +11,7 @@ document_create_from_excel(
   template_id = NULL,
   folder_id = NULL,
   tags = NULL,
-  attachment = NULL,
+  attachments = NULL,
   api_key = get_api_key(),
   existing_document_id = NULL
 )
@@ -25,13 +25,13 @@ document_create_from_excel(
 it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
 If that does not exist, it will be the file name.}
 
-\item{template_id}{document id of the RSpace template used}
+\item{template_id}{document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.}
 
 \item{folder_id}{folder_id in which the document will be created (can be a notebook)}
 
 \item{tags}{vector of tags to apply to the document}
 
-\item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+\item{attachments}{attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
 \item{api_key}{RSpace API key}
 
