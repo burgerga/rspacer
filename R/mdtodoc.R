@@ -27,21 +27,21 @@ html_to_doc_body <- function(path, verbose = T) {
 }
 
 excel_rspace_document_name <- function(path, sections, document_name = NULL) {
+  # If a name is already supplied, just use that
   if (!is.null(document_name)) {
     if (!is.character(document_name)) cli::cli_abort(message = c("x" = "Document name should be a character string or NULL"))
-    title <- document_name
-  } else if ("Title" %in% sections$name) {
-    title <- dplyr::filter(sections, .data$name == "Title") |> dplyr::pull(.data$content)
-  } else if ("Name" %in% sections$name) {
-    title <- dplyr::filter(sections, .data$name == "Name") |> dplyr::pull(.data$content)
-  } else if ("title" %in% sections$name) {
-    title <- dplyr::filter(sections, .data$name == "title") |> dplyr::pull(.data$content)
-  } else if ("name" %in% sections$name) {
-    title <- dplyr::filter(sections, .data$name == "name") |> dplyr::pull(.data$content)
-  } else {
-    title <- tools::file_path_sans_ext(path) |> basename()
+    return(document_name)
   }
-  return(title)
+
+  # Otherwise, test if any sections are named title or name (case-insensitive)
+  detected <- stringr::str_detect(sections$name, stringr::regex("title|name", ignore_case = T))
+  if (any(detected)) {
+    # Return first field that matches
+    return(sections$content[detected][1])
+  }
+
+  # Otherwise just return the filename without extension
+  return(path |> fs::path_file() |> fs::path_ext_remove())
 }
 
 excel_to_doc_body <- function(path, document_name = NULL, verbose = T, file_type = NULL) {
