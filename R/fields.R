@@ -39,11 +39,12 @@ put_all_fields_in_one_field <- function(doc_body_fields, use_html_sep = T) {
 
   if (use_html_sep) {
     text_content <- text_content |>
-      dplyr::mutate(content = paste0("<p>", as.character(content), "</p>"))
+      dplyr::mutate(content = paste0("<p>", as.character(.data$content), "</p>"))
   }
   # Collapse content into one field
   text_content <- text_content |>
-    dplyr::pull(content) |>
+    dplyr::pull(.data$content) |>
+
     paste(collapse = "\n")
 
   return(list(list("content" = text_content)))

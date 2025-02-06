@@ -2,7 +2,7 @@
 title: "Introduction to rspacer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{rspacer}
+  %\VignetteIndexEntry{Introduction to rspacer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
