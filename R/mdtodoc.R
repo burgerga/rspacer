@@ -47,7 +47,7 @@ excel_rspace_document_name <- function(path, sections, document_name = NULL) {
 excel_to_doc_body <- function(path, document_name = NULL, verbose = T, file_type = NULL) {
   if (!file.exists(path)) cli::cli_abort(message = c("x" = glue::glue("File not found: {path}")))
   if (is.null(file_type)) {
-    file_type <- tools::file_ext(path)
+    file_type <- fs::path_ext(path)
   }
   if (!file_type %in% c("xlsx", "csv", "tsv")) cli::cli_abort(message = c("x" = glue::glue("file_type is {file_type}. It should be xlsx, csv or tsv. Specify file_type manually or rename the input file.")))
   sections <- switch(file_type,

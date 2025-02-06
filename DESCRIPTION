@@ -31,7 +31,6 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tools,
     xml2
 Suggests: 
     knitr,
