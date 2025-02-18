@@ -14,13 +14,13 @@ document_append_from_html(
 )
 }
 \arguments{
-\item{path}{html document to be uploaded}
+\item{path}{html document to upload}
 
 \item{existing_document_id}{document identifier of the current RSpace document.}
 
-\item{tags}{vector of tags to apply to the document}
+\item{tags}{Optional. vector of tags to apply to the document}
 
-\item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+\item{attachment}{Optional. attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
 
 \item{allow_missing_fields}{Specify if a mismatch in fields is allowed.
 If this is \code{FALSE}, the html fields cannot be appended to the RSpace document when fields are missing.
