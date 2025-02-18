@@ -24,10 +24,9 @@ A basic document is created if no template is specified.}
 \item{folder_id}{Optional. folder_id in which the document will be created (can be a notebook).
 The document will be placed in an API inbox if no specific folder is specified.}
 
-\item{tags}{Optional. vector of tags to apply to the document}
+\item{tags}{Optional. Vector of tags to apply to the document}
 
-
-\item{attachments}{Optional. attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
+\item{attachments}{Optional. Attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
 \item{existing_document_id}{Optional. If you want to replace a document by a new one, specify the current identifier here.}
 

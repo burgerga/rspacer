@@ -132,8 +132,8 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
 #' A basic document is created if no template is specified.
 #' @param folder_id Optional. folder_id in which the document will be created (can be a notebook).
 #' The document will be placed in an API inbox if no specific folder is specified.
-#' @param tags Optional. vector of tags to apply to the document
-#' @param attachments attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., `tibble(field = 7, path = "file.txt")`
+#' @param tags Optional. Vector of tags to apply to the document
+#' @param attachments Optional. Attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., `tibble(field = 7, path = "file.txt")`
 #' @param existing_document_id Optional. If you want to replace a document by a new one, specify the current identifier here.
 #' @inheritParams api_status
 #' @return Invisible JSON response from the API.
