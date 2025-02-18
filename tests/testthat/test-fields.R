@@ -1,7 +1,7 @@
 test_that("data_frame_to_fields creates a list", {
   # sections and matching list that we expect. sections and fields are defined in helper.R
   sections <- helper_get_sections()
-  fields <- helper_get_fields()
+  fields <- helper_get_unnamed_fields()
 
   expect_equal(data_frame_to_fields(sections), fields)
   # error with incorrect input. TODO raise this error in the function itself?
