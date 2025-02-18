@@ -51,16 +51,16 @@ excel_to_doc_body <- function(path, document_name = NULL, verbose = T, file_type
   }
   if (!file_type %in% c("xlsx", "csv", "tsv")) cli::cli_abort(message = c("x" = glue::glue("file_type is {file_type}. It should be xlsx, csv or tsv. Specify file_type manually or rename the input file.")))
   sections <- switch(file_type,
-    "xlsx" = readxl::read_excel(path, col_names = c("name", "content")),
-    "csv" = readr::read_csv(path, col_names = c("name", "content")),
-    "tsv" = readr::read_tsv(path, col_names = c("name", "content"))
+    "xlsx" = readxl::read_xlsx(path, col_names = c("name", "content"), col_types = "text"),
+    "csv" = readr::read_csv(path, col_names = c("name", "content"), col_types = "cc"),
+    "tsv" = readr::read_tsv(path, col_names = c("name", "content"), col_types = "cc")
   )
   # Set the RSpace entry title
   title <- excel_rspace_document_name(path, sections, document_name)
 
   if (verbose) {
     cli::cli_inform("{.field Title}: {title}")
-    purrr::iwalk(section_heading, ~ cli::cli_inform("{.field - Section {.y}}: {.x}"))
+    purrr::iwalk(sections[["name"]], ~ cli::cli_inform("{.field - Section {.y}}: {.x}"))
   }
   # Get a list as required by RSpace
   fields <- data_frame_to_fields(sections)
@@ -114,12 +114,16 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
 #' RSpace Basic Document, or to a Structured Document if the template is also provided.
 #'
 #' @param path html document to upload
-#' @param template_id document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.
-#' @param folder_id folder_id in which the document will be created (can be a notebook)
-#' @param tags vector of tags to apply to the document
-#' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
-#' @param existing_document_id if you want to replace a document by a new one, specify the current identifier here.
+#' @param template_id document id of the RSpace template used.
+#' Overwritten by the template of existing_document_id if that one is specified.
+#' A basic document is created if no template is specified.
+#' @param folder_id Optional. folder_id in which the document will be created (can be a notebook).
+#' The document will be placed in an API inbox if no specific folder is specified.
+#' @param tags Optional. vector of tags to apply to the document
+#' @param attachment Optional. attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
+#' @param existing_document_id Optional. If you want to replace a document by a new one, specify the current identifier here.
 #' @inheritParams api_status
+#' @return Invisible JSON response from the API.
 #' @export
 document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL,
                                       existing_document_id = NULL, api_key = get_api_key()) {
@@ -166,14 +170,12 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
 #' This function retrieves the current document, and adds text to fields specified by
 #' h2 html headers.
 #'
-#' @param path html document to be uploaded
 #' @param existing_document_id document identifier of the current RSpace document.
-#' @param tags vector of tags to apply to the document
-#' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
 #' @param allow_missing_fields Specify if a mismatch in fields is allowed.
 #' If this is `FALSE`, the html fields cannot be appended to the RSpace document when fields are missing.
 #' If it is `TRUE`, only fields with the same name as in the template will be appended.
 #' @inheritParams api_status
+#' @inheritParams document_create_from_html
 #' @export
 document_append_from_html <- function(path, existing_document_id, tags = NULL, attachment = NULL,
                                       allow_missing_fields = FALSE, api_key = get_api_key()) {
@@ -264,15 +266,11 @@ document_append_from_html <- function(path, existing_document_id, tags = NULL, a
 #' @param document_name specify the name of the RSpace entry. If not specified,
 #' it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
 #' If that does not exist, it will be the file name.
-#' @param template_id document id of the RSpace template used
-#' @param folder_id folder_id in which the document will be created (can be a notebook)
-#' @param tags vector of tags to apply to the document
-#' @param attachment attachment to attach to one of the fields, e.g., `list(field = 7, path = "file.txt")`
-#' @param existing_document_id if you want to replace a document by a new one, specify the current identifier here.
-
+#' @inheritParams document_create_from_html
 #' @inheritParams api_status
 #' @export
-document_create_from_excel <- function(path, file_type = NULL, document_name = NULL, template_id = NULL, folder_id = NULL, tags = NULL, attachment = NULL, api_key = get_api_key(), existing_document_id = NULL) {
+document_create_from_excel <- function(path, file_type = NULL, document_name = NULL, template_id = NULL, folder_id = NULL,
+                                       tags = NULL, attachment = NULL, existing_document_id = NULL, api_key = get_api_key()) {
   doc_body <- excel_to_doc_body(path, document_name = document_name, verbose = F, file_type = file_type)
 
   if (!is.null(existing_document_id)) {

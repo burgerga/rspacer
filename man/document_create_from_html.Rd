@@ -17,17 +17,23 @@ document_create_from_html(
 \arguments{
 \item{path}{html document to upload}
 
-\item{template_id}{document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.}
+\item{template_id}{document id of the RSpace template used.
+Overwritten by the template of existing_document_id if that one is specified.
+A basic document is created if no template is specified.}
 
-\item{folder_id}{folder_id in which the document will be created (can be a notebook)}
+\item{folder_id}{Optional. folder_id in which the document will be created (can be a notebook).
+The document will be placed in an API inbox if no specific folder is specified.}
 
-\item{tags}{vector of tags to apply to the document}
+\item{tags}{Optional. vector of tags to apply to the document}
 
-\item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+\item{attachment}{Optional. attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
 
-\item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
+\item{existing_document_id}{Optional. If you want to replace a document by a new one, specify the current identifier here.}
 
 \item{api_key}{RSpace API key}
+}
+\value{
+Invisible JSON response from the API.
 }
 \description{
 This function can upload a html document (e.g., generated from quarto) to an

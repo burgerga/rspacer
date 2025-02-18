@@ -28,7 +28,9 @@ document_post <- function(body, api_key = get_api_key()) {
 }
 
 document_replace <- function(body, existing_document_id, api_key = get_api_key()) {
-  ifelse("rspacer" %in% stringr::str_split_1(body$tags, ","), body$tags, paste0(c("rspacer", body$tags), collapse = ","))
+  if(!is.null(body$tags)) {
+    ifelse("rspacer" %in% stringr::str_split_1(body$tags, ","), body$tags, paste0(c("rspacer", body$tags), collapse = ","))
+  }
   request() |>
     httr2::req_url_path_append("documents", parse_rspace_id(existing_document_id)) |>
     httr2::req_headers(`apiKey` = api_key) |>

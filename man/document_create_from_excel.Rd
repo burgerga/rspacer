@@ -12,8 +12,8 @@ document_create_from_excel(
   folder_id = NULL,
   tags = NULL,
   attachment = NULL,
-  api_key = get_api_key(),
-  existing_document_id = NULL
+  existing_document_id = NULL,
+  api_key = get_api_key()
 )
 }
 \arguments{
@@ -25,17 +25,20 @@ document_create_from_excel(
 it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
 If that does not exist, it will be the file name.}
 
-\item{template_id}{document id of the RSpace template used}
+\item{template_id}{document id of the RSpace template used.
+Overwritten by the template of existing_document_id if that one is specified.
+A basic document is created if no template is specified.}
 
-\item{folder_id}{folder_id in which the document will be created (can be a notebook)}
+\item{folder_id}{Optional. folder_id in which the document will be created (can be a notebook).
+The document will be placed in an API inbox if no specific folder is specified.}
 
-\item{tags}{vector of tags to apply to the document}
+\item{tags}{Optional. vector of tags to apply to the document}
 
-\item{attachment}{attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+\item{attachment}{Optional. attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+
+\item{existing_document_id}{Optional. If you want to replace a document by a new one, specify the current identifier here.}
 
 \item{api_key}{RSpace API key}
-
-\item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
 }
 \description{
 This function can upload tabular files to RSpace structured documents.
