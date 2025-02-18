@@ -8,9 +8,9 @@ In this tutorial, we describe how to create an Rspace structured document from a
 
 ## 1. Load R libraries
 
-```{r}
+
+``` r
 library(tidyverse)
-library(here)
 library(rspacer)
 ```
 
@@ -18,8 +18,20 @@ library(rspacer)
 
 This code checks if the API is available. The API status should be OK.
 
-```{r}
+
+``` r
 (res <- api_status())
+```
+
+```
+## $message
+## [1] "OK"
+## 
+## $rspaceVersion
+## [1] "1.106.0"
+```
+
+``` r
 stopifnot(res$message == "OK")
 ```
 
@@ -40,9 +52,24 @@ Alternatively, you can create a new Quarto document. Include the same headers as
 
 Rspacer needs to know which file you want to upload. In this tutorial, we want to create a structured document from the file "Template_example.html" that we made in Step 4, and we want to upload the .qmd file as an attachment. We recommend to work with relative paths from within an R project and specify these paths using the here package. If this is not what you want, you need to specify the absolute file path. The code below assumes that the html file and qmd file have the same filename. If this is not the case, change both the file_name and the matching_code_file variables.
 
-```{r}
-(file_name <- here("man/example/Template_example.html"))
-(matching_code_file <- str_replace(file_name, ".html$", ".qmd"))
+
+``` r
+(file_name <- system.file("Template_example.html", package = "rspacer"))
+```
+
+```
+## [1] "/Users/gerhard/GitHub/rspacer/inst/Template_example.html"
+```
+
+``` r
+(matching_code_file <- fs::path_ext_set(file_name, ".qmd"))
+```
+
+```
+## /Users/gerhard/GitHub/rspacer/inst/Template_example.qmd
+```
+
+``` r
 stopifnot(file.exists(file_name))
 stopifnot(file.exists(matching_code_file))
 ```
@@ -51,8 +78,28 @@ stopifnot(file.exists(matching_code_file))
 
 You can 'walk' through folders until you find the folder or notebook where you want to upload the Structured Document, using the folder_tree() function in rspacer. If you want to replace a file, also define the existing file id. If you have a more complicated document than a Basic Document, you have to specify the identifier of the Template as well. Folder identifiers start with FL. Notebook identifiers start with NB. Structured document identifiers start with SD.
 
-```{r}
+
+``` r
 folder_tree()
+```
+
+```
+## # A tibble: 10 × 9
+##        id globalId name                   created         lastModified parentFolderId type  `_links` owner       
+##     <int> <chr>    <chr>                  <chr>           <chr>                 <int> <chr> <list>   <list>      
+##  1 356307 SD356307 Gerhard Burger         2024-01-17T14:… 2024-01-17T…           7813 DOCU… <list>   <named list>
+##  2 260004 FL260004 LACDR RDM              2023-11-06T10:… 2023-11-06T…           7813 FOLD… <list>   <named list>
+##  3 242175 FL242175 GABi001_EMP_regulation 2023-05-30T10:… 2023-06-14T…           7813 FOLD… <list>   <named list>
+##  4 242400 FL242400 Ontologies             2023-06-01T07:… 2023-06-01T…           7813 FOLD… <list>   <named list>
+##  5 242398 FL242398 Api Inbox              2023-06-01T07:… 2023-06-01T…           7813 FOLD… <list>   <named list>
+##  6 242182 FL242182 Publications           2023-05-30T11:… 2023-05-30T…           7813 FOLD… <list>   <named list>
+##  7  21961 FL21961  DDS2 Data management   2023-03-16T09:… 2023-03-16T…           7813 FOLD… <list>   <named list>
+##  8   7833 FL7833   Templates              2022-12-22T12:… 2022-12-22T…           7813 FOLD… <list>   <named list>
+##  9   7819 GF7819   Gallery                2022-12-22T12:… 2022-12-22T…           7813 FOLD… <list>   <named list>
+## 10   7814 FL7814   Shared                 2022-12-22T12:… 2022-12-22T…           7813 FOLD… <list>   <named list>
+```
+
+``` r
 #folder_tree("") # Specify folder ID in brackets to keep walking.
 
 folder_id <- "" # Specify folder ID for upload
@@ -67,16 +114,22 @@ tags <- c("") # You can add multiple tags in a vector. For example a grant numbe
 
 Create an RSpace document using the code chunk below. It creates a document from your Template_example.html rendered file, and places the .qmd with the same name in the fourth field of the structured document. If no folder_id is specified, the function document_create_from_html() creates the document in the 'API Inbox'. Optionally, you can add tags or replace an entire document. Make sure that the template_id is the identifier of the template that you previously made in Rspace. To upload the document and attachment to the API inbox, this code chunk is sufficient:
 
-```{r}
+
+``` r
 document_create_from_html(
     path = file_name,
     template_id = "SD377682"
 )
 ```
 
+```
+## Error in curl::curl_parse_url(url, baseurl = base_url, decode = FALSE): Failed to parse URL: Bad scheme
+```
+
 The function document_create_from_html has more parameters, for example to upload the document to the specified notebook or folder. If you want to upload a code file as well, it will be added in the number of the field as an attachment. Use the existing_file_id only if a file needs to be replaced instead of created.
 
-```{r}
+
+``` r
 if(existing_file_id == ""){
   document_create_from_html(
     path = file_name,
@@ -97,8 +150,6 @@ if(existing_file_id == ""){
 }
 ```
 
-## Session info
-
-```{r}
-sessionInfo()
+```
+## Error in curl::curl_parse_url(url, baseurl = base_url, decode = FALSE): Failed to parse URL: Malformed input to a URL function
 ```

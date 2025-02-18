@@ -8,7 +8,7 @@ document_append_from_html(
   path,
   existing_document_id,
   tags = NULL,
-  attachment = NULL,
+  attachments = NULL,
   allow_missing_fields = FALSE,
   api_key = get_api_key()
 )
@@ -21,6 +21,7 @@ document_append_from_html(
 \item{tags}{Optional. vector of tags to apply to the document}
 
 \item{attachment}{Optional. attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+\item{attachments}{Optional. attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
 \item{allow_missing_fields}{Specify if a mismatch in fields is allowed.
 If this is \code{FALSE}, the html fields cannot be appended to the RSpace document when fields are missing.

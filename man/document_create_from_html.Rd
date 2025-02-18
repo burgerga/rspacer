@@ -9,7 +9,7 @@ document_create_from_html(
   template_id = NULL,
   folder_id = NULL,
   tags = NULL,
-  attachment = NULL,
+  attachments = NULL,
   existing_document_id = NULL,
   api_key = get_api_key()
 )
@@ -26,7 +26,8 @@ The document will be placed in an API inbox if no specific folder is specified.}
 
 \item{tags}{Optional. vector of tags to apply to the document}
 
-\item{attachment}{Optional. attachment to attach to one of the fields, e.g., \code{list(field = 7, path = "file.txt")}}
+
+\item{attachments}{Optional. attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
 \item{existing_document_id}{Optional. If you want to replace a document by a new one, specify the current identifier here.}
 
