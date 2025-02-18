@@ -1,13 +1,15 @@
 # Functions to process RSpace structured document fields
 
-data_frame_to_fields <- function(fields_data_frame) {
-  fields <- lapply(1:nrow(fields_data_frame), function(row_nr) {
-    list(
-      "name" = fields_data_frame$name[row_nr],
-      "content" = fields_data_frame$content[row_nr]
-    )
+data_frame_to_fields <- function(fields_df) {
+  col_names <- colnames(fields_df)
+
+  # Convert each row of the data frame into a list using the column names
+  fields <- apply(fields_df, 1, function(row) {
+    row_list <- as.list(row)
+    names(row_list) <- col_names
+    row_list
   })
-  names(fields) <- fields_data_frame$name
+  fields <- as.list(fields)
   return(fields)
 }
 
