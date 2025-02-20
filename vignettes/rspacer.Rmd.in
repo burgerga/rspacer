@@ -80,33 +80,4 @@ tibble(fields = res$fields) |>
 
 #### Create
 
-**WORK IN PROGRESS**
-
-Creating documents is currently possible using the (unexported) low level `rspacer:::document_post()` function. For example, the following code will create a Basic Document in the 'Api Inbox' folder
-
-```{r}
-# construct body
-body_r <- list(
-  name = "rspacer_create_doc",
-  tags = "API",
-  fields = list(
-    list(content = "Creating a document using rspacer is not (yet) easy")
-  )
-)
-res <- rspacer:::document_post(body_r)
-```
-
-#### Create a structured document
-
-The `document_create_from_html()` is a wrapper around the previous `document_post` function that creates the body from an HTML file (e.g. generated with quarto) by splitting the html on the `h2` tag. Note that the Template used MUST have the same number of fields as sections in the HTML file. Detailed descriptions can be found in the [Tutorial document_create_from_html](https://burgerga.github.io/rspacer/articles/tutorial-document_create_from_html).
-
-```{r}
-file_name <- here("vignettes/articles/Template_example.html")
-matching_code_file <- str_replace(file_name, ".html$", ".qmd")
-document_create_from_html(
-    path = file_name,
-    template_id = "SD377682"
-)
-```
-
-For more info see <https://community.researchspace.com/public/apiDocs> [POST /documents].
+Creating (structured) documents is slightly more involved, see "create_document_from_html" in the Articles tab for more info.
