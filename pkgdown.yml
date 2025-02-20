@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   articles/create_document_from_html: create_document_from_html.html
   rspacer: rspacer.html
-last_built: 2025-02-18T16:57Z
+last_built: 2025-02-20T12:50Z
 urls:
   reference: https://burgerga.github.io/rspacer/reference
   article: https://burgerga.github.io/rspacer/articles

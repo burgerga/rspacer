@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>rspacer • rspacer</title>
+<title>Introduction to rspacer • rspacer</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="rspacer">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to rspacer">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -34,7 +34,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/create_document_from_html.html">Tutorial document_create_from_html()</a></li>
+<li><a class="dropdown-item" href="../articles/create_document_from_html.html">Tutorial: creating a document from html</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -57,7 +57,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>rspacer</h1>
+      <h1>Introduction to rspacer</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/burgerga/rspacer/blob/main/vignettes/rspacer.Rmd" class="external-link"><code>vignettes/rspacer.Rmd</code></a></small>
@@ -80,12 +80,13 @@ Contributions are welcome!</strong></p>
 your RSpace instance followed by <code>api/v1</code>, e.g. <a href="https://leiden.researchspace.com/api/v1" class="external-link uri">https://leiden.researchspace.com/api/v1</a>)</li>
 <li>Your API key, which is an authentication token you can use instead
 of your username and password. To create an API key go to ‘Manage API
-Key’ section of your RSpace profile page (MyRSpace -&gt; Profile).
+Key’ section of your RSpace profile page (MyRSpace -&gt; My Profile).
 <strong>You should keep your API key private.</strong> You can
-regenerate API key at any time, which will invalidate the old key.</li>
+regenerate an API key at any time, which will invalidate the old
+key.</li>
 </ol>
 <p>You can use the <code><a href="../reference/set_api_url.html">set_api_url()</a></code> and
-<code><a href="../reference/set_api_key.html">set_api_key()</a></code> function to make these available to rspacer
+<code><a href="../reference/set_api_key.html">set_api_key()</a></code> functions to make these available to rspacer
 in the current session. To make this information persistent you can
 store it in environment variables. An easy way to do this is with
 <code>usethis::edit_r_environ()</code>; in the file that opens, you
@@ -101,7 +102,7 @@ run</p>
 <span><span class="co">#&gt; [1] "OK"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $rspaceVersion</span></span>
-<span><span class="co">#&gt; [1] "1.97.5"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "1.107.1"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="functionality">Functionality<a class="anchor" aria-label="anchor" href="#functionality"></a>
@@ -115,34 +116,33 @@ Workspace as a tibble:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/folder_tree.html">folder_tree</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 10 × 9</span></span>
-<span><span class="co">#&gt;        id globalId name              created lastModified parentFolderId type  `_links`</span></span>
-<span><span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;             &lt;chr&gt;   &lt;chr&gt;                 &lt;int&gt; &lt;chr&gt; &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  1 356307 SD356307 Gerhard Burger    2024-0… 2024-01-17T…           7813 DOCU… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  2 260004 FL260004 LACDR RDM         2023-1… 2023-11-06T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  3 242175 FL242175 GABi001_EMP_regu… 2023-0… 2023-06-14T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  4 242400 FL242400 Ontologies        2023-0… 2023-06-01T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  5 242398 FL242398 Api Inbox         2023-0… 2023-06-01T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  6 242182 FL242182 Publications      2023-0… 2023-05-30T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  7  21961 FL21961  DDS2 Data manage… 2023-0… 2023-03-16T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  8   7833 FL7833   Templates         2022-1… 2022-12-22T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt;  9   7819 GF7819   Gallery           2022-1… 2022-12-22T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt; 10   7814 FL7814   Shared            2022-1… 2022-12-22T…           7813 FOLD… &lt;list&gt;  </span></span>
-<span><span class="co">#&gt; # ℹ 1 more variable: owner &lt;list&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;        id globalId name                   created          lastModified parentFolderId type  `_links` owner       </span></span>
+<span><span class="co">#&gt;     &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;                  &lt;chr&gt;            &lt;chr&gt;                 &lt;int&gt; &lt;chr&gt; &lt;list&gt;   &lt;list&gt;      </span></span>
+<span><span class="co">#&gt;  1 356307 SD356307 Gerhard Burger         2024-01-17T14:5… 2024-01-17T…           7813 DOCU… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  2 260004 FL260004 LACDR RDM              2023-11-06T10:1… 2023-11-06T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  3 242175 FL242175 GABi001_EMP_regulation 2023-05-30T10:1… 2023-06-14T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  4 242400 FL242400 Ontologies             2023-06-01T07:2… 2023-06-01T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  5 242398 FL242398 Api Inbox              2023-06-01T07:2… 2023-06-01T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  6 242182 FL242182 Publications           2023-05-30T11:0… 2023-05-30T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  7  21961 FL21961  DDS2 Data management   2023-03-16T09:5… 2023-03-16T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  8   7833 FL7833   Templates              2022-12-22T12:3… 2022-12-22T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt;  9   7819 GF7819   Gallery                2022-12-22T12:3… 2022-12-22T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 10   7814 FL7814   Shared                 2022-12-22T12:3… 2022-12-22T…           7813 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span></code></pre></div>
 <p>You can also specify an id or Unique ID (<code>globalId</code>) to
 show the contents of a specific folder:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/folder_tree.html">folder_tree</a></span><span class="op">(</span><span class="fl">7819</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 9</span></span>
-<span><span class="co">#&gt;      id globalId name   created lastModified parentFolderId type  `_links` owner       </span></span>
-<span><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;                 &lt;int&gt; &lt;chr&gt; &lt;list&gt;   &lt;list&gt;      </span></span>
-<span><span class="co">#&gt; 1  7828 GF7828   Snipp… 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 2  7827 GF7827   PdfDo… 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 3  7826 GF7826   Misce… 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 4  7825 GF7825   Docum… 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 5  7824 GF7824   Chemi… 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 6  7823 GF7823   Videos 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 7  7822 GF7822   Audios 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
-<span><span class="co">#&gt; 8  7820 GF7820   Images 2022-1… 2022-12-22T…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt;      id globalId name          created                  lastModified    parentFolderId type  `_links` owner       </span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt;                    &lt;chr&gt;                    &lt;int&gt; &lt;chr&gt; &lt;list&gt;   &lt;list&gt;      </span></span>
+<span><span class="co">#&gt; 1  7828 GF7828   Snippets      2022-12-22T12:32:22.318Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 2  7827 GF7827   PdfDocuments  2022-12-22T12:32:22.315Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 3  7826 GF7826   Miscellaneous 2022-12-22T12:32:22.311Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 4  7825 GF7825   Documents     2022-12-22T12:32:22.308Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 5  7824 GF7824   Chemistry     2022-12-22T12:32:22.304Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 6  7823 GF7823   Videos        2022-12-22T12:32:22.301Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 7  7822 GF7822   Audios        2022-12-22T12:32:22.297Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 8  7820 GF7820   Images        2022-12-22T12:32:22.290Z 2022-12-22T12:…           7819 FOLD… &lt;list&gt;   &lt;named list&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="documents">Documents<a class="anchor" aria-label="anchor" href="#documents"></a>
@@ -176,52 +176,22 @@ information you could use</p>
 <span>  <span class="fu">unnest_wider</span><span class="op">(</span><span class="va">fields</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">name</span>, <span class="va">type</span>, <span class="va">content</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 3</span></span>
-<span><span class="co">#&gt;   name          type   content                                                         </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;                                                           </span></span>
-<span><span class="co">#&gt; 1 Template Used string "LACDR-ISA - Contact v0.2.0"                                    </span></span>
-<span><span class="co">#&gt; 2 Name          string "Gerhard A. Burger"                                             </span></span>
-<span><span class="co">#&gt; 3 Email         string "g.a.burger@lacdr.leidenuniv.nl"                                </span></span>
-<span><span class="co">#&gt; 4 Phone         string ""                                                              </span></span>
-<span><span class="co">#&gt; 5 ORCID         string "0000-0003-1062-5576"                                           </span></span>
-<span><span class="co">#&gt; 6 Address       text   "&lt;p&gt;&lt;a href=\"https://www.universiteitleiden.nl/en/locations/go…</span></span>
-<span><span class="co">#&gt; 7 Affiliation   string "Leiden University"                                             </span></span>
+<span><span class="co">#&gt;   name          type   content                                                                                    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;                                                                                      </span></span>
+<span><span class="co">#&gt; 1 Template Used string "LACDR-ISA - Contact v0.2.0"                                                               </span></span>
+<span><span class="co">#&gt; 2 Name          string "Gerhard A. Burger"                                                                        </span></span>
+<span><span class="co">#&gt; 3 Email         string "g.a.burger@lacdr.leidenuniv.nl"                                                           </span></span>
+<span><span class="co">#&gt; 4 Phone         string ""                                                                                         </span></span>
+<span><span class="co">#&gt; 5 ORCID         string "0000-0003-1062-5576"                                                                      </span></span>
+<span><span class="co">#&gt; 6 Address       text   "&lt;p&gt;&lt;a href=\"https://www.universiteitleiden.nl/en/locations/gorlaeus-building\"&gt;Gorlaeus …</span></span>
+<span><span class="co">#&gt; 7 Affiliation   string "Leiden University"                                                                        </span></span>
 <span><span class="co">#&gt; 8 Roles         text   ""</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="create-a-document">Create a document<a class="anchor" aria-label="anchor" href="#create-a-document"></a>
+<h4 id="create">Create<a class="anchor" aria-label="anchor" href="#create"></a>
 </h4>
-<p>Creating documents is currently possible using the (unexported) low
-level <code>rspacer:::document_post()</code> function. For example, the
-following code will create a Basic Document in the ‘ApiInbox’ folder</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># construct body</span></span>
-<span><span class="va">body_r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  name <span class="op">=</span> <span class="st">"rspacer_create_doc"</span>,</span>
-<span>  tags <span class="op">=</span> <span class="st">"API"</span>,</span>
-<span>  fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"Creating a document using rspacer is not (yet) easy"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">rspacer</span><span class="fu">:::</span><span class="fu">document_post</span><span class="op">(</span><span class="va">body_r</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document created: &lt;https://leiden.researchspace.com/globalId/SD376167&gt;</span></span></code></pre></div>
-<p>The <code><a href="../reference/document_create_from_html.html">document_create_from_html()</a></code> is a wrapper around the
-previous <code>document_post</code> function that creates the body from
-an HTML file (e.g. generated with quarto) by splitting the html on the
-<code>h2</code> tag. Note that the Template used MUST have the same
-number of fields as sections in the HTML file. Detailed descriptions can
-be found in the <a href="https://burgerga.github.io/rspacer/articles/tutorial-document_create_from_html">Tutorial
-document_create_from_html</a>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu">here</span><span class="op">(</span><span class="st">"vignettes/articles/Template_example.html"</span><span class="op">)</span></span>
-<span><span class="va">matching_code_file</span> <span class="op">&lt;-</span> <span class="fu">str_replace</span><span class="op">(</span><span class="va">file_name</span>, <span class="st">".html$"</span>, <span class="st">".qmd"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/document_create_from_html.html">document_create_from_html</a></span><span class="op">(</span></span>
-<span>    path <span class="op">=</span> <span class="va">file_name</span>,</span>
-<span>    template_id <span class="op">=</span> <span class="st">"SD377682"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Document created: &lt;https://leiden.researchspace.com/globalId/SD389614&gt;</span></span></code></pre></div>
-<p><strong>WORK IN PROGRESS</strong></p>
-<p>For more info see <a href="https://community.researchspace.com/public/apiDocs" class="external-link uri">https://community.researchspace.com/public/apiDocs</a> [POST
-/documents].</p>
+<p>Creating (structured) documents is slightly more involved, see
+“create_document_from_html” in the Articles tab for more info.</p>
 </div>
 </div>
 </div>
