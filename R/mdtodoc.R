@@ -128,13 +128,12 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
 #'
 #' @param path html document to upload
 #' @param template_id document id of the RSpace template used.
-#' Overwritten by the template of existing_document_id if that one is specified.
+#' Will be overwritten by the template of `existing_document_id` if specified.
 #' A basic document is created if no template is specified.
-#' @param folder_id Optional. folder_id in which the document will be created (can be a notebook).
-#' The document will be placed in an API inbox if no specific folder is specified.
-#' @param tags Optional. Vector of tags to apply to the document
-#' @param attachments Optional. Attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., `tibble(field = 7, path = "file.txt")`
-#' @param existing_document_id Optional. If you want to replace a document by a new one, specify the current identifier here.
+#' @param folder_id folder_id in which the document will be created (can be a notebook)
+#' @param tags vector of tags to apply to the document (will include "rspacer" by default)
+#' @param attachments attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., `tibble(field = 7, path = "file.txt")`
+#' @param existing_document_id document id of a document to be replaced, if NULL (the default) a new document will be created.
 #' @inheritParams api_status
 #' @return Invisible JSON response from the API.
 #' @export
@@ -161,7 +160,6 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
       .x
     })
   } else {
-    # TODO Basic Document can have only 1 field
     doc_body$fields <- put_all_fields_in_one_field(doc_body$fields)
   }
   # Add tags, form ID and attachments to doc_body

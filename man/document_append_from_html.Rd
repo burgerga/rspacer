@@ -18,9 +18,9 @@ document_append_from_html(
 
 \item{existing_document_id}{document identifier of the current RSpace document.}
 
-\item{tags}{Optional. Vector of tags to apply to the document}
+\item{tags}{vector of tags to apply to the document (will include "rspacer" by default)}
 
-\item{attachments}{Optional. Attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
+\item{attachments}{attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
 \item{allow_missing_fields}{Specify if a mismatch in fields is allowed.
 If this is \code{FALSE}, the html fields cannot be appended to the RSpace document when fields are missing.
