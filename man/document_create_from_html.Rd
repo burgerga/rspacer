@@ -17,17 +17,22 @@ document_create_from_html(
 \arguments{
 \item{path}{html document to upload}
 
-\item{template_id}{document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.}
+\item{template_id}{document id of the RSpace template used.
+Will be overwritten by the template of \code{existing_document_id} if specified.
+A basic document is created if no template is specified.}
 
 \item{folder_id}{folder_id in which the document will be created (can be a notebook)}
 
-\item{tags}{vector of tags to apply to the document}
+\item{tags}{vector of tags to apply to the document (will include "rspacer" by default)}
 
 \item{attachments}{attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
-\item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
+\item{existing_document_id}{document id of a document to be replaced, if NULL (the default) a new document will be created.}
 
 \item{api_key}{RSpace API key}
+}
+\value{
+Invisible JSON response from the API.
 }
 \description{
 This function can upload a html document (e.g., generated from quarto) to an

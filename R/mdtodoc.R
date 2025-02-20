@@ -51,16 +51,16 @@ excel_to_doc_body <- function(path, document_name = NULL, verbose = T, file_type
   }
   if (!file_type %in% c("xlsx", "csv", "tsv")) cli::cli_abort(message = c("x" = glue::glue("file_type is {file_type}. It should be xlsx, csv or tsv. Specify file_type manually or rename the input file.")))
   sections <- switch(file_type,
-    "xlsx" = readxl::read_excel(path, col_names = c("name", "content")),
-    "csv" = readr::read_csv(path, col_names = c("name", "content")),
-    "tsv" = readr::read_tsv(path, col_names = c("name", "content"))
+    "xlsx" = readxl::read_xlsx(path, col_names = c("name", "content"), col_types = "text"),
+    "csv" = readr::read_csv(path, col_names = c("name", "content"), col_types = "cc"),
+    "tsv" = readr::read_tsv(path, col_names = c("name", "content"), col_types = "cc")
   )
   # Set the RSpace entry title
   title <- excel_rspace_document_name(path, sections, document_name)
 
   if (verbose) {
     cli::cli_inform("{.field Title}: {title}")
-    purrr::iwalk(section_heading, ~ cli::cli_inform("{.field - Section {.y}}: {.x}"))
+    purrr::iwalk(sections[["name"]], ~ cli::cli_inform("{.field - Section {.y}}: {.x}"))
   }
   # Get a list as required by RSpace
   fields <- data_frame_to_fields(sections)
@@ -127,12 +127,15 @@ add_information_to_doc_body <- function(doc_body, template_id = NULL, folder_id 
 #' RSpace Basic Document, or to a Structured Document if the template is also provided.
 #'
 #' @param path html document to upload
-#' @param template_id document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.
+#' @param template_id document id of the RSpace template used.
+#' Will be overwritten by the template of `existing_document_id` if specified.
+#' A basic document is created if no template is specified.
 #' @param folder_id folder_id in which the document will be created (can be a notebook)
-#' @param tags vector of tags to apply to the document
+#' @param tags vector of tags to apply to the document (will include "rspacer" by default)
 #' @param attachments attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., `tibble(field = 7, path = "file.txt")`
-#' @param existing_document_id if you want to replace a document by a new one, specify the current identifier here.
+#' @param existing_document_id document id of a document to be replaced, if NULL (the default) a new document will be created.
 #' @inheritParams api_status
+#' @return Invisible JSON response from the API.
 #' @export
 document_create_from_html <- function(path, template_id = NULL, folder_id = NULL, tags = NULL, attachments = NULL,
                                       existing_document_id = NULL, api_key = get_api_key()) {
@@ -157,7 +160,6 @@ document_create_from_html <- function(path, template_id = NULL, folder_id = NULL
       .x
     })
   } else {
-    # TODO Basic Document can have only 1 field
     doc_body$fields <- put_all_fields_in_one_field(doc_body$fields)
   }
   # Add tags, form ID and attachments to doc_body
@@ -275,12 +277,11 @@ document_append_from_html <- function(path, existing_document_id, tags = NULL, a
 #' @param document_name specify the name of the RSpace entry. If not specified,
 #' it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
 #' If that does not exist, it will be the file name.
-#' @param existing_document_id if you want to replace a document by a new one, specify the current identifier here.
-
 #' @inheritParams api_status
 #' @inheritParams document_create_from_html
 #' @export
-document_create_from_excel <- function(path, file_type = NULL, document_name = NULL, template_id = NULL, folder_id = NULL, tags = NULL, attachments = NULL, api_key = get_api_key(), existing_document_id = NULL) {
+document_create_from_excel <- function(path, file_type = NULL, document_name = NULL, template_id = NULL, folder_id = NULL,
+                                       tags = NULL, attachments = NULL, existing_document_id = NULL, api_key = get_api_key()) {
   doc_body <- excel_to_doc_body(path, document_name = document_name, verbose = F, file_type = file_type)
 
   if (!is.null(existing_document_id)) {

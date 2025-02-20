@@ -12,8 +12,8 @@ document_create_from_excel(
   folder_id = NULL,
   tags = NULL,
   attachments = NULL,
-  api_key = get_api_key(),
-  existing_document_id = NULL
+  existing_document_id = NULL,
+  api_key = get_api_key()
 )
 }
 \arguments{
@@ -25,17 +25,19 @@ document_create_from_excel(
 it will be the value in Title, Name, title, or name if that is one of the fields in the Excel document.
 If that does not exist, it will be the file name.}
 
-\item{template_id}{document id of the RSpace template used. Overwritten by the template of existing_document_id if that one is specified.}
+\item{template_id}{document id of the RSpace template used.
+Will be overwritten by the template of \code{existing_document_id} if specified.
+A basic document is created if no template is specified.}
 
 \item{folder_id}{folder_id in which the document will be created (can be a notebook)}
 
-\item{tags}{vector of tags to apply to the document}
+\item{tags}{vector of tags to apply to the document (will include "rspacer" by default)}
 
 \item{attachments}{attachments to attach to the fields in tibble/data.frame form (one attachment per row), e.g., \code{tibble(field = 7, path = "file.txt")}}
 
-\item{api_key}{RSpace API key}
+\item{existing_document_id}{document id of a document to be replaced, if NULL (the default) a new document will be created.}
 
-\item{existing_document_id}{if you want to replace a document by a new one, specify the current identifier here.}
+\item{api_key}{RSpace API key}
 }
 \description{
 This function can upload tabular files to RSpace structured documents.

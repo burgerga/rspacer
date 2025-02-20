@@ -40,7 +40,16 @@ test_that("excel_rspace_document_name can process a document name", {
 })
 
 test_that("excel_to_doc_body can create a doc body", {
-  # one that should work
+  # these should work
+  expect_type(excel_to_doc_body(path = testthat::test_path("minimal_excel.xlsx"), verbose = FALSE, file_type = "xlsx"), "list")
+  expect_type(excel_to_doc_body(path = testthat::test_path("minimal_csv1.csv"), verbose = FALSE, file_type = "csv"), "list")
+  expect_type(excel_to_doc_body(path = testthat::test_path("minimal_tsv.txt"), verbose = FALSE, file_type = "tsv"), "list")
+  # guess file format. should also work
+  expect_type(excel_to_doc_body(path = testthat::test_path("minimal_excel.xlsx"), verbose = FALSE), "list")
+  expect_type(excel_to_doc_body(path = testthat::test_path("minimal_csv1.csv"), verbose = FALSE), "list")
+  # this one should be too hard to guess because tsv file saved as .txt without specifying that it is tab-separated.
+  expect_error(excel_to_doc_body(path = testthat::test_path("minimal_tsv.txt"), verbose = FALSE))
+  # test verbose
   expect_type(excel_to_doc_body(path = testthat::test_path("minimal_excel.xlsx"), verbose = FALSE, file_type = "xlsx"), "list")
   # not existing file
   expect_error(excel_to_doc_body(path = "not_existing_file.xlsx", verbose = FALSE, file_type = ".xlsx"))
